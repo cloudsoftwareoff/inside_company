@@ -41,7 +41,7 @@ class UserWrapper extends StatelessWidget {
           );
 
           // Check the role of the current user and return the appropriate widget
-          if (currentUserRole.name == "sudo") {
+          if (currentUserRole.id == "sudo") {
             return DashBoard();
           } else {
             return ProfilePage(userdata: currentUser);
