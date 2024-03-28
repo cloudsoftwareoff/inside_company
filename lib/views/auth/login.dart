@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inside_company/constant.dart';
+import 'package:inside_company/services/users/auth.dart';
+import 'package:inside_company/user_wrapper.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.controller});
@@ -38,10 +42,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Text(
                   'Log In',
                   style: TextStyle(
-                    color: Color(0xFF755DC1),
+                    color: AppColors.primaryColor,
                     fontSize: 27,
                     fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(
@@ -49,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextField(
                   controller: _emailController,
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.start,
                   style: const TextStyle(
                     color: Color(0xFF393939),
                     fontSize: 13,
@@ -75,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       borderSide: BorderSide(
                         width: 1,
-                        color: Color(0xFF9F7BFF),
+                        color: AppColors.primaryColor,
                       ),
                     ),
                   ),
@@ -85,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextField(
                   controller: _passController,
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.start,
                   style: const TextStyle(
                     color: Color(0xFF393939),
                     fontSize: 13,
@@ -111,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       borderSide: BorderSide(
                         width: 1,
-                        color: Color(0xFF9F7BFF),
+                        color: AppColors.primaryColor,
                       ),
                     ),
                   ),
@@ -125,9 +129,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 329,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        
+               
+                        AuthResult authResult = await UserAuth()
+                            .signInWithEmailAndPassword(context,
+                                _emailController.text, _passController.text);
+
+                        if (mounted && authResult.user != null) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserWrapper()),
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF9F7BFF),
+                        backgroundColor: AppColors.primaryColor,
                       ),
                       child: const Text(
                         'Sign In',
@@ -167,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(
-                          color: Color(0xFF755DC1),
+                          color: AppColors.secondaryColor,
                           fontSize: 13,
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,
