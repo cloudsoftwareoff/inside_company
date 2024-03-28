@@ -5,7 +5,7 @@ import 'package:inside_company/providers/users_list.dart';
 import 'package:provider/provider.dart'; // Import provider package
 import 'package:inside_company/firebase_options.dart';
 import 'package:inside_company/wrapper.dart';
- // Import your UserListProvider
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
