@@ -19,7 +19,7 @@ class UserWrapper extends StatelessWidget {
     if (FirebaseAuth.instance.currentUser == null) {
       return MainAuth();
     }
-    // Retrieve the current user's ID (Replace this with the actual way of getting the current user's ID)
+    // Retrieve the current user
     String? currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
     return FutureBuilder(
