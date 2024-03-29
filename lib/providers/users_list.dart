@@ -7,12 +7,15 @@ class UserListProvider extends ChangeNotifier {
 
   List<UserModel> get users => _users;
 
-
   UserListProvider() {
     fetchUsers();
   }
 
-  
+  void updatelist(List<UserModel> list) {
+    _users = list;
+    notifyListeners();
+  }
+
   Future<void> fetchUsers() async {
     try {
       List<UserModel> fetchedUsers = await UserDB().getAllUsers();

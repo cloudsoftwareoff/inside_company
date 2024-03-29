@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/providers/role_provider.dart';
 import 'package:inside_company/providers/users_list.dart';
 import 'package:inside_company/user_wrapper.dart';
@@ -27,6 +28,8 @@ class MyApp extends StatelessWidget {
             create: (_) => UserListProvider()), 
         ChangeNotifierProvider(
             create: (_) => RoleListProvider()),
+        ChangeNotifierProvider(
+            create: (_) => CurrentUserProvider()),
       ],
       child: MaterialApp(
         initialRoute: '/',

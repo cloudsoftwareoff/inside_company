@@ -243,9 +243,9 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                         context,
                                         emailController.text,
                                         _passController.text);
-                                print(authResult.user);
+                            (authResult.user);
                                 if (authResult.user != null) {
-                                  print("role ${selectedRole!.id}");
+                                  
                                   await UserDB().addUserToDB(UserModel(
                                       uid: authResult.user!.uid,
                                       username: nameController.text,

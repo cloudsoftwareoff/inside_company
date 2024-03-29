@@ -13,7 +13,8 @@ class UserDB {
         'username': user.username,
         'email': user.email,
         'roleId': user.roleId,
-        'picture':user.picture
+        'picture':user.picture,
+        'verified':user.verified
       });
       print('User added to database successfully');
     } catch (e) {
@@ -33,6 +34,7 @@ class UserDB {
           username: data['username'] ?? 'no_username',
           picture: data['picture'] ?? 'https://i.pinimg.com/564x/a8/0e/36/a80e3690318c08114011145fdcfa3ddb.jpg',
           roleId: data['roleId'] ?? '',
+          verified: data['verified'] ?? 'no'
         );
       } else {
         print('User with ID $uid not found.');
@@ -58,6 +60,7 @@ class UserDB {
           username: data['username'] ?? '',
           picture: data['picture'] ?? 'https://i.pinimg.com/564x/a8/0e/36/a80e3690318c08114011145fdcfa3ddb.jpg',
           roleId: data['roleId'] ?? '',
+          verified: data['verified'] ?? 'no'
         );
         userList.add(user);
       });

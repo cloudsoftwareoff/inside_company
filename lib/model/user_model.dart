@@ -1,9 +1,9 @@
 class UserModel {
   final String uid;
-  final String username;
+  String username;
   final String roleId;
-  final String picture;
-  final String email;
+  String picture;
+  String email;
   String? verified = "no";
 
   UserModel(
@@ -12,6 +12,5 @@ class UserModel {
       required this.email,
       required this.picture,
       required this.roleId,
-      this.verified
-      });
+      this.verified});
 }

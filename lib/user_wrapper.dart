@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:inside_company/model/role_model.dart';
 import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/current_user.dart';
+import 'package:inside_company/providers/users_list.dart';
 import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
 import 'package:inside_company/views/admin/dashboard.dart';
@@ -26,6 +27,7 @@ class UserWrapper extends StatelessWidget {
       future: Future.wait([
         UserDB().getUserById(currentUserId),
         RoleService().fetchRoles(),
+        UserDB().getAllUsers()
       ]),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -45,26 +47,23 @@ class UserWrapper extends StatelessWidget {
         } else {
           UserModel currentUser = snapshot.data?[0];
           List<RoleModel> roles = snapshot.data?[1] ?? [];
+          final usersProvider =
+              Provider.of<UserListProvider>(context, listen: false);
+          usersProvider.updatelist(snapshot.data?[2]);
 
-          // Find the role of the current user
           RoleModel currentUserRole = roles.firstWhere(
             (role) => role.id == currentUser.roleId,
             //orElse: () => null,
           );
-
+          final currentUserProvider =
+              Provider.of<CurrentUserProvider>(context, listen: false);
+          currentUserProvider.updateUser(currentUser);
+          currentUserProvider.updateRole(currentUserRole);
           // Check the role of the current user and return the appropriate widget
           if (currentUserRole.id == "sudo") {
-
-            return ChangeNotifierProvider(
-                create: (_) => CurrentUserProvider(
-                    currentuser: currentUser, user_role: currentUserRole),
-                child: DashBoard());
+            return DashBoard();
           } else {
-            return ChangeNotifierProvider(
-                create: (_) => CurrentUserProvider(
-                    currentuser: currentUser, user_role: currentUserRole),
-                child: ProfilePage(userdata: currentUser));
-          
+            return ProfilePage(userdata: currentUser);
           }
         }
       },
