@@ -72,9 +72,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             });
                             widget.userdata.verified = "yes";
 
-                            await UserDB().addUserToDB(widget.userdata);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Verified")));
+                            await UserDB().updateUser(widget.userdata);
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Verified")));
+                            }
                             setState(() {
                               load = !load;
                             });

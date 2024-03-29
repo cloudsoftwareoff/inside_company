@@ -21,6 +21,21 @@ class UserDB {
       print('Error adding user to database: $e');
     }
   }
+  Future<void> updateUser(UserModel user) async {
+    try {
+      await _usersCollection.doc(user.uid).update({
+        'uid':user.uid,
+        'username': user.username,
+        'email': user.email,
+        'roleId': user.roleId,
+        'picture':user.picture,
+        'verified':user.verified
+      });
+      print('User updated successfully');
+    } catch (e) {
+      print('Error updating user to database: $e');
+    }
+  }
   Future<UserModel?> getUserById(String uid) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> snapshot =
