@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/model/user_model.dart';
+import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/services/users/userdb.dart';
 import 'package:inside_company/views/auth/main_auth.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
+import 'package:provider/provider.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -17,6 +19,9 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
+    final currentUserProvider = Provider.of<CurrentUserProvider>(context);
+    final currentUser = currentUserProvider.currentuser;
+    final userRole = currentUserProvider.user_role;
     List<UserModel> users = [];
     return SafeArea(
         child: Scaffold(
@@ -47,7 +52,7 @@ class _DashBoardState extends State<DashBoard> {
               },
               child: Icon(Icons.person)),
         ],
-        title: const Text("Dashboard"),
+        title: Text("Hello ${currentUser.username}"),
       ),
       body: FutureBuilder<List<UserModel>>(
         future: UserDB().getAllUsers(),
@@ -72,10 +77,27 @@ class _DashBoardState extends State<DashBoard> {
                 return ListTile(
                   leading: CircleAvatar(
                       radius: 20, foregroundImage: NetworkImage(user.picture)),
-                  title: Text(
-                    user.username,
-                    style: TextStyle(
-                        fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+                  title: Row(
+                    children: [
+                      Text(
+                        user.username,
+                        style: TextStyle(
+                            fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        children: [
+                          if (user.verified == "yes")
+                            Icon(
+                              Icons.admin_panel_settings,
+                              color: Colors.redAccent,
+                            ),
+                          Icon(
+                            Icons.verified,
+                            color: Colors.blueAccent,
+                          )
+                        ],
+                      )
+                    ],
                   ),
                   subtitle: Text(user.email),
                   trailing: GestureDetector(

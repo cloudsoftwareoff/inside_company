@@ -41,6 +41,7 @@ class UserAuth {
       return AuthResult(user: null, errorMessage: e.toString());
     }
   }
+  
 
   Future<void> signOut(BuildContext context) async {
     try {

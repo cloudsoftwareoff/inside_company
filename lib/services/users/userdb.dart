@@ -9,9 +9,11 @@ class UserDB {
   Future<void> addUserToDB(UserModel user) async {
     try {
       await _usersCollection.doc(user.uid).set({
+        'uid':user.uid,
         'username': user.username,
         'email': user.email,
         'roleId': user.roleId,
+        'picture':user.picture
       });
       print('User added to database successfully');
     } catch (e) {

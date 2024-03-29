@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/services/users/auth.dart';
@@ -39,7 +40,12 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 24),
             buildName(widget.userdata),
             const SizedBox(height: 24),
-            Center(child: buildUpgradeButton()),
+            Visibility(
+                visible: FirebaseAuth.instance.currentUser!.uid ==
+                        widget.userdata.uid
+                    ? true
+                    : false,
+                child: Center(child: buildUpgradeButton())),
             const SizedBox(height: 24),
             NumbersWidget(),
             const SizedBox(height: 48),
