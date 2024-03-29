@@ -4,7 +4,7 @@ import 'package:inside_company/providers/role_provider.dart';
 import 'package:inside_company/providers/users_list.dart';
 import 'package:inside_company/user_wrapper.dart';
 import 'package:inside_company/views/auth/main_auth.dart';
-import 'package:provider/provider.dart'; // Import provider package
+import 'package:provider/provider.dart'; 
 import 'package:inside_company/firebase_options.dart';
 import 'package:inside_company/wrapper.dart';
 
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (_) => UserListProvider()), // Example: UserListProvider
+            create: (_) => UserListProvider()), 
         ChangeNotifierProvider(
-            create: (_) => RoleListProvider()), // Example: UserListProvider
+            create: (_) => RoleListProvider()),
       ],
       child: MaterialApp(
         initialRoute: '/',
