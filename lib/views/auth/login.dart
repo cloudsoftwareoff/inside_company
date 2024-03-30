@@ -146,11 +146,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       context,
                                       _emailController.text,
                                       _passController.text);
-
+                              //print("object");
+                              setState(() {
+                                loading = false;
+                              });
                               if (mounted && authResult.user != null) {
-                                setState(() {
-                                  loading = !loading;
-                                });
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
