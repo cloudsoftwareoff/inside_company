@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inside_company/views/auth/main_auth.dart';
 
 class AuthResult {
   final User? user;
@@ -41,15 +42,41 @@ class UserAuth {
       return AuthResult(user: null, errorMessage: e.toString());
     }
   }
-  
 
   Future<void> signOut(BuildContext context) async {
-    try {
-      await _auth.signOut();
-    } catch (e) {
-      print('Error signing out: $e');
-      _showErrorSnackbar(context, 'Sign out failed: $e');
-    }
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Sign Out'),
+          content: Text('Are you sure you want to sign out?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                // Navigator.of(context).pop();
+                try {
+                  await _auth.signOut();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainAuth()),
+                  );
+                } catch (e) {
+                  print('Error signing out: $e');
+                  _showErrorSnackbar(context, 'Sign out failed: $e');
+                }
+              },
+              child: Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showErrorSnackbar(BuildContext context, String message) {

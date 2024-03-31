@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
+import 'package:inside_company/views/invest/view_opportunities.dart';
 import 'package:inside_company/views/opportunity/pages/add_opportunity.dart';
 import 'package:inside_company/views/opportunity/pages/view_opportunity.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
-class OpportunityManagementPage extends StatefulWidget {
-  const OpportunityManagementPage({super.key});
+class InvestmentManagePage extends StatefulWidget {
+  const InvestmentManagePage({super.key});
 
   @override
-  _OpportunityManagementPageState createState() =>
-      _OpportunityManagementPageState();
+  _InvestmentManagePageState createState() => _InvestmentManagePageState();
 }
 
-class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
+class _InvestmentManagePageState extends State<InvestmentManagePage> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
   @override
@@ -39,10 +39,10 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
         ],
         centerTitle: true,
         title: Text(_currentPageIndex == 0
-            ? 'Add Opportunity'
+            ? 'Manage Opportunity'
             : _currentPageIndex == 1
-                ? 'View All Opportunities'
-                : 'buy contracts'),
+                ? 'Verify Opportunities'
+                : 'To be added later'),
       ),
       body: PageView(
         controller: _pageController,
@@ -51,8 +51,8 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
             _currentPageIndex = index;
           });
         },
-        children: [
-          AddOpportunityPage(),
+        children: const [
+          Investment(),
           ViewAllOpportunitiesPage(),
           Center(
             child: Text("later"),
@@ -71,10 +71,10 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
             );
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add Opportunity',
+            icon: Icon(Icons.manage_history),
+            label: 'Manage Opportunity',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
@@ -82,7 +82,7 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.contact_emergency),
-            label: 'CONTRACT',
+            label: 'Later',
           ),
         ],
       ),

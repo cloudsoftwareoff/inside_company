@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
-    //final currentUser = currentUserProvider.currentuser;
+    final currentUser = currentUserProvider.currentuser;
     final currentUserRole = currentUserProvider.user_role;
     return Builder(
       builder: (context) => Scaffold(

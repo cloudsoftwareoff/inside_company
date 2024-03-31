@@ -43,12 +43,6 @@ class _DashBoardState extends State<DashBoard> with WidgetsBindingObserver {
           leading: GestureDetector(
             onTap: () async {
               await UserAuth().signOut(context);
-              if (mounted) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => MainAuth()),
-                );
-              }
             },
             child: const Icon(Icons.logout),
           ),
