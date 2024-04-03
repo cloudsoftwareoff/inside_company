@@ -32,12 +32,15 @@ dependencies:
   cloud_firestore: ^4.13.1
   cupertino_icons: ^1.0.2
   dropdown_model_list: ^2.0.2
+  file_picker: ^8.0.0+1
   firebase_auth: ^4.13.0
   firebase_core: ^2.22.0
+
+  firebase_storage: ^11.6.0
   flutter:
     sdk: flutter
-  provider: ^6.1.2
   loading_overlay: ^0.3.0
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0

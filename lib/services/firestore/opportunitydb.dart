@@ -42,28 +42,41 @@ class OpportunityDB {
       throw e;
     }
   }
-  Future<List<Opportunity>> fetchPendingOpportunities() async {
-  try {
-    QuerySnapshot snapshot = await _firestore.collection(_collectionName).get();
-    List<Opportunity> opportunities = [];
-    for (var doc in snapshot.docs) {
-      //  status is "PENDING"
-      if (doc['status'] == 'PENDING') {
-        opportunities.add(Opportunity(
-          id: doc['id'],
-          addedby: doc['addedby'],
-          name: doc['name'],
-          content: doc['content'],
-          status: doc['status'],
-          letter_link: doc['letter_link'],
-        ));
-      }
-    }
-    return opportunities;
-  } catch (e) {
-    print('Error fetching pending opportunities: $e');
-    throw e;
-  }
-}
 
+  Future<List<Opportunity>> fetchPendingOpportunities() async {
+    try {
+      QuerySnapshot snapshot =
+          await _firestore.collection(_collectionName).get();
+      List<Opportunity> opportunities = [];
+      for (var doc in snapshot.docs) {
+        //  status is "PENDING"
+        if (doc['status'] == 'PENDING') {
+          opportunities.add(Opportunity(
+            id: doc['id'],
+            addedby: doc['addedby'],
+            name: doc['name'],
+            content: doc['content'],
+            status: doc['status'],
+            letter_link: doc['letter_link'],
+          ));
+        }
+      }
+      return opportunities;
+    } catch (e) {
+      print('Error fetching pending opportunities: $e');
+      throw e;
+    }
+  }
+
+  Future<void> updateOpportunityStatus(
+      String opportunityId, String newStatus) async {
+    try {
+      await _firestore.collection(_collectionName).doc(opportunityId).update({
+        'status': newStatus,
+      });
+    } catch (e) {
+      print('Error updating opportunity status: $e');
+      throw e;
+    }
+  }
 }

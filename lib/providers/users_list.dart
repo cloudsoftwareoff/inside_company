@@ -20,10 +20,11 @@ class UserListProvider extends ChangeNotifier {
     try {
       List<UserModel> fetchedUsers = await UserDB().getAllUsers();
       _users = fetchedUsers;
-      notifyListeners();
     } catch (e) {
       // Handle errors if any
       print('Error fetching users: $e');
     }
+
+    notifyListeners();
   }
 }

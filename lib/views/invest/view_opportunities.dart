@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
+import 'package:inside_company/views/invest/confirmation_screen.dart';
 
 class Investment extends StatelessWidget {
   const Investment({super.key});
@@ -26,15 +27,24 @@ class Investment extends StatelessWidget {
                 Opportunity opportunity = opportunities[index];
 
                 return ListTile(
-                    title: Text(opportunity.name),
-                    subtitle: Text(opportunity.content),
-                    leading: const Icon(
-                      Icons.pending,
-                      color: Colors.amber,
-                    ),
-                    trailing: Icon(Icons.confirmation_num),
-                    );
-
+                  title: Text(opportunity.name),
+                  subtitle: Text(opportunity.content),
+                  leading: const Icon(
+                    Icons.pending,
+                    color: Colors.amber,
+                  ),
+                  trailing: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ConfirmationScreen(opportunity: opportunity),
+                          ),
+                        );
+                      },
+                      child: Icon(Icons.confirmation_num)),
+                );
               },
             );
           }
