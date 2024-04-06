@@ -9,7 +9,7 @@ import 'package:inside_company/views/auth/main_auth.dart';
 import 'package:inside_company/views/profile/edit_profile.dart';
 import 'package:inside_company/views/profile/widgets/appbar.dart';
 import 'package:inside_company/views/profile/widgets/button.dart';
-import 'package:inside_company/views/profile/widgets/number_widget.dart';
+import 'package:inside_company/views/profile/widgets/user_data.dart';
 import 'package:inside_company/views/profile/widgets/pfp.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
         body: LoadingOverlay(
           isLoading: load,
           child: ListView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             children: [
               ProfileWidget(
                 imagePath: widget.userdata.picture,
@@ -82,7 +82,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             });
                           }))),
               const SizedBox(height: 24),
-              NumbersWidget(),
+              UserData(
+                userModel: widget.userdata,
+              ),
               const SizedBox(height: 48),
             ],
           ),
@@ -95,12 +97,12 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Text(
             user.username,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           const SizedBox(height: 4),
           Text(
             user.email,
-            style: TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey),
           )
         ],
       );
@@ -111,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
           UserAuth().signOut(context);
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => MainAuth()),
+            MaterialPageRoute(builder: (context) => const MainAuth()),
           );
         },
       );

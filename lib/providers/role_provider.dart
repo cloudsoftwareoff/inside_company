@@ -10,7 +10,11 @@ class RoleListProvider extends ChangeNotifier {
   List<RoleModel> get roles => _roles;
   bool get isLoading => _isLoading;
 
-  // Method to fetch roles
+  void updateRole(List<RoleModel> roles) {
+    _roles = roles;
+    notifyListeners();
+  }
+
   Future<void> fetchRoles() async {
     try {
       _isLoading = true;

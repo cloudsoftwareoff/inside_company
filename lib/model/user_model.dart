@@ -4,6 +4,7 @@ class UserModel {
   final String roleId;
   String picture;
   String email;
+  String region;
   String? verified = "no";
 
   UserModel(
@@ -12,5 +13,6 @@ class UserModel {
       required this.email,
       required this.picture,
       required this.roleId,
+      required this.region,
       this.verified});
 }

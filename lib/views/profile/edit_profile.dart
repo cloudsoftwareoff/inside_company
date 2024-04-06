@@ -68,7 +68,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       });
                       if (new_email == "none") {
                         await FirebaseAuth.instance.currentUser!
-                            .updateEmail(new_email);
+                            .verifyBeforeUpdateEmail(new_email);
                       }
                       await UserDB().updateUser(widget.user);
                       if (mounted) {

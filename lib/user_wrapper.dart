@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:inside_company/model/role_model.dart';
 import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/current_user.dart';
+import 'package:inside_company/providers/role_provider.dart';
 import 'package:inside_company/providers/users_list.dart';
+import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
 import 'package:inside_company/views/admin/dashboard.dart';
@@ -45,11 +47,18 @@ class UserWrapper extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
+          if (snapshot.data?[0] == null) {
+            FirebaseAuth.instance.signOut();
+            return MainAuth();
+          }
           UserModel currentUser = snapshot.data?[0];
           List<RoleModel> roles = snapshot.data?[1] ?? [];
           final usersProvider =
               Provider.of<UserListProvider>(context, listen: false);
-          usersProvider.updatelist(snapshot.data?[2]);
+          usersProvider.updateList(snapshot.data?[2]);
+          final rolesProvider =
+              Provider.of<RoleListProvider>(context, listen: false);
+          rolesProvider.updateRole(roles);
 
           RoleModel currentUserRole = roles.firstWhere(
             (role) => role.id == currentUser.roleId,
@@ -61,7 +70,7 @@ class UserWrapper extends StatelessWidget {
           currentUserProvider.updateRole(currentUserRole);
           // Check the role of the current user and return the appropriate widget
           if (currentUserRole.id == "sudo") {
-            return DashBoard();
+            return const DashBoard();
           } else {
             return ProfilePage(userdata: currentUser);
           }

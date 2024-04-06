@@ -11,7 +11,7 @@ class UserListProvider extends ChangeNotifier {
     fetchUsers();
   }
 
-  void updatelist(List<UserModel> list) {
+  void updateList(List<UserModel> list) {
     _users = list;
     notifyListeners();
   }
