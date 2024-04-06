@@ -82,7 +82,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                             textDirection: TextDirection.ltr,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Text(
+                              Text(
                                 'Create an Account',
                                 style: TextStyle(
                                   color: AppColors.secondaryColor,
@@ -105,7 +105,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w400,
                                   ),
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
                                       color: AppColors.secondaryColor,
@@ -114,16 +114,16 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
                                       borderSide: BorderSide(
                                         width: 1,
                                         color: AppColors.secondaryColor,
                                       ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
                                       borderSide: BorderSide(
                                         width: 1,
                                         color: AppColors.secondaryColor,
@@ -148,10 +148,10 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       labelText: 'Name',
                                       hintText: 'Full Name',
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 10,
                                         fontFamily: 'Poppins',
@@ -163,7 +163,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w600,
                                       ),
-                                      enabledBorder: OutlineInputBorder(
+                                      enabledBorder: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
@@ -172,7 +172,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                         ),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
                                           width: 1,
@@ -193,10 +193,10 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       labelText: 'Password',
                                       hintText: 'Create Password',
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 10,
                                         fontFamily: 'Poppins',
@@ -208,7 +208,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w600,
                                       ),
-                                      enabledBorder: OutlineInputBorder(
+                                      enabledBorder: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
@@ -217,7 +217,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                         ),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
                                           width: 1,
@@ -373,7 +373,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                               const Duration(milliseconds: 500),
                                           curve: Curves.ease);
                                     },
-                                    child: const Text(
+                                    child:  Text(
                                       'Log In ',
                                       style: TextStyle(
                                         color: AppColors.secondaryColor,

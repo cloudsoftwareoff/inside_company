@@ -4,7 +4,7 @@ import 'package:inside_company/constant.dart';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    leading: const BackButton(
+    leading:  BackButton(
       color: AppColors.primaryColor,
     ),
     backgroundColor: Colors.transparent,

@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           textDirection: TextDirection.ltr,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               'Welcome Back',
                               style: TextStyle(
                                 color: AppColors.secondaryColor,
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               ),
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 labelText: 'Email',
                                 labelStyle: TextStyle(
                                   color: AppColors.secondaryColor,
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w600,
                                 ),
-                                enabledBorder: OutlineInputBorder(
+                                enabledBorder: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   borderSide: BorderSide(
@@ -91,8 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
                                   borderSide: BorderSide(
                                     width: 1,
                                     color: AppColors.secondaryColor,
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               ),
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 labelText: 'Password',
                                 labelStyle: TextStyle(
                                   color: AppColors.secondaryColor,
@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w600,
                                 ),
-                                enabledBorder: OutlineInputBorder(
+                                enabledBorder: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   borderSide: BorderSide(
@@ -129,8 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
                                   borderSide: BorderSide(
                                     width: 1,
                                     color: AppColors.secondaryColor,
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             const Duration(milliseconds: 500),
                                         curve: Curves.ease);
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     'Sign Up',
                                     style: TextStyle(
                                       color: AppColors.secondaryColor,

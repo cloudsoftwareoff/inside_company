@@ -231,7 +231,7 @@ class RolePage extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Icon(
+                    child:  Icon(
                       Icons.launch,
                       color: AppColors.primaryColor,
                     ),
