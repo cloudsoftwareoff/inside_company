@@ -39,10 +39,9 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
         ],
         centerTitle: true,
         title: Text(_currentPageIndex == 0
-            ? 'Add Opportunity'
-            : _currentPageIndex == 1
-                ? 'View All Opportunities'
-                : 'buy contracts'),
+            ? 'View Opportunity'
+            
+                : 'View Demands'),
       ),
       body: PageView(
         controller: _pageController,
@@ -53,7 +52,7 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
         },
         children: [
           AddOpportunityPage(),
-          ViewAllOpportunitiesPage(),
+          const ViewAllOpportunitiesPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -71,11 +70,11 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'Add Opportunity',
+            label: 'View Opportunities',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'View All Opportunities',
+            label: 'View Demands',
           ),
         ],
       ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/views/invest/view_opportunities.dart';
-import 'package:inside_company/views/opportunity/pages/add_opportunity.dart';
 import 'package:inside_company/views/opportunity/pages/view_opportunity.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +24,7 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
       appBar: AppBar(
         leading: GestureDetector(
             onTap: () async => await UserAuth().signOut(context),
-            child: Icon(Icons.logout)),
+            child:const Icon(Icons.logout)),
         actions: [
           GestureDetector(
               onTap: () {
@@ -35,14 +34,10 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
                   ),
                 );
               },
-              child: Icon(Icons.person_2))
+              child:const Icon(Icons.person_2))
         ],
         centerTitle: true,
-        title: Text(_currentPageIndex == 0
-            ? 'Manage Opportunity'
-            : _currentPageIndex == 1
-                ? 'Verify Opportunities'
-                : 'To be added later'),
+        title: Text(currentUser!.username),
       ),
       body: PageView(
         controller: _pageController,
@@ -52,11 +47,8 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
           });
         },
         children: const [
-          Investment(),
+          ViewPendingOpportunity(),
           ViewAllOpportunitiesPage(),
-          Center(
-            child: Text("later"),
-          )
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -66,23 +58,20 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
             _currentPageIndex = index;
             _pageController.animateToPage(
               index,
-              duration: Duration(milliseconds: 300),
+              duration:const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             );
           });
         },
         items: const [
           BottomNavigationBarItem(
+            backgroundColor: Colors.white,
             icon: Icon(Icons.manage_history),
-            label: 'Manage Opportunity',
+            label: 'Manage',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'View All Opportunities',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.contact_emergency),
-            label: 'Later',
+            label: 'View',
           ),
         ],
       ),

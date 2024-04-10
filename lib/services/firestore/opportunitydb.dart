@@ -9,11 +9,12 @@ class OpportunityDB {
     try {
       await _firestore.collection(_collectionName).doc(opportunity.id).set({
         'id': opportunity.id,
-        'addedby': opportunity.addedby,
-        'name': opportunity.name,
-        'content': opportunity.content,
+        'addedby': opportunity.addedBy,
+        'title': opportunity.title,
+        'content': opportunity.description,
         'status': opportunity.status,
         'letter_link': opportunity.letter_link,
+        'budget': opportunity.budget
       });
     } catch (e) {
       print('Error adding opportunity: $e');
@@ -29,10 +30,13 @@ class OpportunityDB {
       snapshot.docs.forEach((doc) {
         opportunities.add(Opportunity(
           id: doc['id'],
-          addedby: doc['addedby'],
-          name: doc['name'],
-          content: doc['content'],
+          addedBy: doc['addedby'],
+          title: doc['name'],
+          description: doc['content'],
           status: doc['status'],
+          material: doc['material'] ?? [],
+
+          budget: doc['budget'] != null ? doc['budget'] : '-1',
           letter_link: doc['letter_link'],
         ));
       });
@@ -53,11 +57,13 @@ class OpportunityDB {
         if (doc['status'] == 'PENDING') {
           opportunities.add(Opportunity(
             id: doc['id'],
-            addedby: doc['addedby'],
-            name: doc['name'],
-            content: doc['content'],
+            addedBy: doc['addedby'],
+            title: doc['name'],
+            description: doc['content'],
             status: doc['status'],
             letter_link: doc['letter_link'],
+            material: doc['material'] ?? [],
+            budget: doc['budget'] ?? '-1',
           ));
         }
       }

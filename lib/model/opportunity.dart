@@ -2,19 +2,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Opportunity {
   final String id;
-  final String addedby;
-  String name;
-  String content;
+  final String addedBy;
+  String title;
+  String description;
+  List<String> material;
   String status;
-  //final Timestamp timestamp;
+  String budget;
+  final Timestamp? timestamp;
+  final Timestamp? lastModified;
   String? letter_link;
+
   Opportunity({
     required this.id,
-    required this.addedby,
-    required this.name,
-    required this.content,
+    required this.addedBy,
+    required this.title,
+    required this.description,
     required this.status,
-    // this.timestamp,
+    required this.budget,
+    required this.material,
+    this.timestamp,
+    this.lastModified,
     this.letter_link,
   });
 }
