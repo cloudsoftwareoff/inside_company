@@ -7,7 +7,7 @@ class Opportunity {
   String description;
   List<String> material;
   String status;
-  String budget;
+  double budget;
   final Timestamp? timestamp;
   final Timestamp? lastModified;
   String? letter_link;

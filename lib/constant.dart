@@ -15,10 +15,11 @@ ThemeData myTheme = ThemeData(
     colorScheme: ColorScheme.fromSwatch(
       accentColor: AppColors.secondaryColor, //buttons highlights
     ),
-    scaffoldBackgroundColor: Color(0xffFFE5DE),
+    scaffoldBackgroundColor: Color(0xffDAD3C8),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.secondaryColor,
     ),
+    cardTheme: CardTheme(color: Colors.white, elevation: 8),
     bottomNavigationBarTheme:
         BottomNavigationBarThemeData(backgroundColor: Colors.white)
     // textTheme: TextTheme(

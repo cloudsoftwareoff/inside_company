@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:inside_company/model/demand.dart';
 import 'package:inside_company/model/opportunity.dart';
+import 'package:inside_company/services/firestore/demand_db.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final Opportunity opportunity;
@@ -19,7 +24,21 @@ class ConfirmationScreen extends StatefulWidget {
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
   File? _selectedFile;
   bool _uploading = false;
+  bool uploaded = false;
+  DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
+  Future<void> setData(Map<String, Object> data) async {
+    print(databaseReference.path);
+    try {
+      DatabaseReference newChildRef = databaseReference.push();
+      await newChildRef.set(data);
+      print('Data saved successfully at path: ${newChildRef.path}');
+    } on FirebaseException catch (error) {
+      print('Error saving data: $error');
+    }
+  }
+
+  final supabase = Supabase.instance.client;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +62,10 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
             ),
             const SizedBox(height: 16),
             if (_selectedFile != null) Text(_selectedFile!.path),
-            if (_selectedFile != null)
+            if (_selectedFile == null)
               ElevatedButton(
                 onPressed: () async {
-                  // Pick a PDF file from device
+                  // Pick a PDF file
                   FilePickerResult? result =
                       await FilePicker.platform.pickFiles(
                     type: FileType.custom,
@@ -67,30 +86,43 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   setState(() {
                     _uploading = true;
                   });
-                  try {
-                    TaskSnapshot snapshot = await FirebaseStorage.instance
-                        .ref(
-                            'pdfs/${DateTime.now().millisecondsSinceEpoch}.pdf')
-                        .putFile(_selectedFile!);
-                    String downloadUrl = await snapshot.ref.getDownloadURL();
+                  String fileName =
+                      "${DateTime.now().millisecondsSinceEpoch}.pdf";
 
-                    widget.opportunity.letter_link = downloadUrl;
-                    
+                  final String path =
+                      await supabase.storage.from('inside').upload(
+                            '$fileName',
+                            _selectedFile!,
+                            fileOptions: const FileOptions(
+                                cacheControl: '3600', upsert: false),
+                          );
+                  widget.opportunity.letter_link = path;
 
-                    setState(() {
-                      _uploading = false;
-                    });
-                  } catch (e) {
-                    print('Error uploading file: $e');
-                    setState(() {
-                      _uploading = false;
-                    });
-                    // Show an error message if the upload fails
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Failed to upload file: $e'),
-                      backgroundColor: Colors.red,
-                    ));
-                  }
+                  // try {
+                  //   TaskSnapshot snapshot = await FirebaseStorage.instance
+                  //       .ref(
+                  //           'pdfs/${DateTime.now().millisecondsSinceEpoch}.pdf')
+                  //       .putFile(_selectedFile!);
+                  //   String downloadUrl = await snapshot.ref.getDownloadURL();
+
+                  //   widget.opportunity.letter_link = downloadUrl;
+
+                  //   setState(() {
+                  //     _uploading = false;
+                  //   });
+                  // } catch (e) {
+                  //   print('Error uploading file: $e');
+
+                  //   // Show an error message if the upload fails
+                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //     content: Text('Failed to upload file: $e'),
+                  //     backgroundColor: Colors.red,
+                  //   ));
+                  // }
+                  setState(() {
+                    _uploading = false;
+                    uploaded = true;
+                  });
                 },
                 child: _uploading
                     ? CircularProgressIndicator()
@@ -100,7 +132,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (_selectedFile != null)
+                if (uploaded)
                   ElevatedButton(
                     onPressed: () async {
                       if (_selectedFile == null) {
@@ -112,9 +144,28 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                       }
                       try {
                         // Update the status of the opportunity to "Confirmed"
-                        await OpportunityDB().updateOpportunityStatus(
-                            widget.opportunity.id, 'CONFIRMED');
 
+                        await OpportunityDB().updateOpportunityStatus(
+                            widget.opportunity.id,
+                            'CONFIRMED',
+                            widget.opportunity.letter_link!);
+
+                        Map<String, Object> op = new Map<String, Object>();
+                        op.putIfAbsent("id", () => widget.opportunity.id);
+                        op["title"] = widget.opportunity.title;
+                        op["desc"] = widget.opportunity.description;
+                        op["r"] = "0";
+
+                        //! fix this nonsense
+                        // print('loading');
+                        // await setData(op);
+                        // print("loaded");
+                        await DemandDB().addDemand(Demand(
+                          state: "PENDING",
+                            id: DateTime.now().millisecondsSinceEpoch.toString(),
+                            opportunityId: widget.opportunity.id,
+                            budget: widget.opportunity.budget,
+                            dateDA: Timestamp.now()));
                         if (mounted) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(

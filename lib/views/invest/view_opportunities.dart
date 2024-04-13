@@ -24,7 +24,7 @@ class _ViewPendingOpportunityState extends State<ViewPendingOpportunity> {
 
   Future<void> _loadOpportunities() async {
     List<Opportunity> opportunities =
-        await OpportunityDB().fetchPendingOpportunities();
+        await OpportunityDB().fetchOpportunitiesByState("PENDING");
     setState(() {
       _opportunities = opportunities;
     });

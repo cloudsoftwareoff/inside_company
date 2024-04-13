@@ -25,8 +25,8 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
           .instance.currentUser!.uid, // Assuming the admin adds opportunities
       title: _titleController.text,
       description: _descriptionController.text,
-      budget: _budgetController.text,
-      material: [],
+      budget: double.parse(_budgetController.text),
+      material: _materials,
       timestamp: Timestamp.now(),
       lastModified: Timestamp.now(),
       status: "PENDING",
@@ -37,7 +37,10 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
       _titleController.clear();
       _descriptionController.clear();
       _statusController.clear();
-
+      _budgetController.clear();
+      setState(() {
+        _materials.clear();
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Opportunity added successfully')),
       );

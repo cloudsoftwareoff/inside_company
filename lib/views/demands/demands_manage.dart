@@ -3,33 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/views/demands/confirmed_opportunity.dart';
+import 'package:inside_company/views/demands/view_demands.dart';
 import 'package:inside_company/views/opportunity/pages/add_opportunity.dart';
 import 'package:inside_company/views/opportunity/pages/view_opportunity.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
-class OpportunityManagementPage extends StatefulWidget {
-  const OpportunityManagementPage({super.key});
+class DemandManagementPage extends StatefulWidget {
+  const DemandManagementPage({super.key});
 
   @override
-  _OpportunityManagementPageState createState() =>
-      _OpportunityManagementPageState();
+  _DemandManagementPageState createState() => _DemandManagementPageState();
 }
 
-class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
+class _DemandManagementPageState extends State<DemandManagementPage> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final databaseReference = FirebaseDatabase.instance.ref();
-
-    databaseReference.onValue.listen((event) {
-      final data = event.snapshot.value;
-      //
-      print("db:\n");
-      print(data);
-    });
     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
     final currentUser = currentUserProvider.currentuser;
     return Scaffold(
@@ -49,11 +41,7 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
               child: Icon(Icons.person_2))
         ],
         centerTitle: true,
-        title: Text(_currentPageIndex == 0
-            ? 'Add Opportunity'
-            : _currentPageIndex == 1
-                ? 'View All Opportunities'
-                : 'Send Demands'),
+        title: Text('Hello ${currentUser!.username}'),
       ),
       body: PageView(
         controller: _pageController,
@@ -63,11 +51,8 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
           });
         },
         children: [
-          AddOpportunityPage(),
-          const ViewAllOpportunitiesPage(
-            state: "ALL",
-          ),
-          ConfirmedOpportunity()
+          const ConfirmedOpportunity(),
+          ViewDemands(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -77,7 +62,7 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
             _currentPageIndex = index;
             _pageController.animateToPage(
               index,
-              duration: const Duration(milliseconds: 300),
+              duration: Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             );
           });
@@ -85,15 +70,11 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'Add Opportunity',
+            label: 'Create Demand',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'View All Opportunities',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.request_page),
-            label: 'Demands',
+            label: 'View All Demands',
           ),
         ],
       ),

@@ -12,7 +12,6 @@ Please respect our intellectual property rights and adhere to the terms of non-c
 Thank you for your understanding.
 */
 
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/constant.dart';
@@ -21,14 +20,20 @@ import 'package:inside_company/providers/role_provider.dart';
 import 'package:inside_company/providers/users_list.dart';
 import 'package:inside_company/user_wrapper.dart';
 import 'package:inside_company/views/auth/main_auth.dart';
-import 'package:provider/provider.dart'; 
+import 'package:provider/provider.dart';
 import 'package:inside_company/firebase_options.dart';
 import 'package:inside_company/wrapper.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Supabase.initialize(
+    url: 'https://enmkhvokjdaplyopffxy.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVubWtodm9ramRhcGx5b3BmZnh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI4NjE0MTIsImV4cCI6MjAyODQzNzQxMn0.XICdps172vKqGJ1VT-sqJHKSLrQF3BviKNC7GmmqmHk',
   );
   runApp(const MyApp());
 }
@@ -40,20 +45,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (_) => UserListProvider()), 
-        ChangeNotifierProvider(
-            create: (_) => RoleListProvider()),
-        ChangeNotifierProvider(
-            create: (_) => CurrentUserProvider()),
+        ChangeNotifierProvider(create: (_) => UserListProvider()),
+        ChangeNotifierProvider(create: (_) => RoleListProvider()),
+        ChangeNotifierProvider(create: (_) => CurrentUserProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: myTheme,
         initialRoute: '/',
         routes: {
-          '/': (context) =>const Wrapper(),
-          '/auth': (context) =>const MainAuth(),
-          '/home': (context) =>const UserWrapper(),
+          '/': (context) => const Wrapper(),
+          '/auth': (context) => const MainAuth(),
+          '/home': (context) => const UserWrapper(),
         },
       ),
     );

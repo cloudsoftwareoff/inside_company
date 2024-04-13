@@ -11,9 +11,12 @@ class OpportunityDB {
         'id': opportunity.id,
         'addedby': opportunity.addedBy,
         'title': opportunity.title,
-        'content': opportunity.description,
+        'description': opportunity.description,
         'status': opportunity.status,
-        'letter_link': opportunity.letter_link,
+        'letter_link': opportunity.letter_link ?? "",
+        'material': opportunity.material,
+        'timestamp': opportunity.timestamp,
+        'lastModified': opportunity.lastModified,
         'budget': opportunity.budget
       });
     } catch (e) {
@@ -27,18 +30,22 @@ class OpportunityDB {
       QuerySnapshot snapshot =
           await _firestore.collection(_collectionName).get();
       List<Opportunity> opportunities = [];
+      List<String> materials = [];
       snapshot.docs.forEach((doc) {
+        materials = doc['material']?.cast<String>() ?? [];
         opportunities.add(Opportunity(
           id: doc['id'],
           addedBy: doc['addedby'],
-          title: doc['name'],
-          description: doc['content'],
+          title: doc['title'],
+          description: doc['description'],
           status: doc['status'],
-          material: doc['material'] ?? [],
-
+          timestamp: doc['timestamp'],
+          lastModified: doc['lastModified'],
+          material: materials,
           budget: doc['budget'] != null ? doc['budget'] : '-1',
           letter_link: doc['letter_link'],
         ));
+        materials.clear();
       });
       return opportunities;
     } catch (e) {
@@ -47,39 +54,44 @@ class OpportunityDB {
     }
   }
 
-  Future<List<Opportunity>> fetchPendingOpportunities() async {
+  Future<List<Opportunity>> fetchOpportunitiesByState(String state) async {
     try {
       QuerySnapshot snapshot =
           await _firestore.collection(_collectionName).get();
       List<Opportunity> opportunities = [];
+
       for (var doc in snapshot.docs) {
-        //  status is "PENDING"
-        if (doc['status'] == 'PENDING') {
+        List<String> materials = doc['material']?.cast<String>() ?? [];
+
+        if (doc['status'] == state) {
           opportunities.add(Opportunity(
             id: doc['id'],
             addedBy: doc['addedby'],
-            title: doc['name'],
-            description: doc['content'],
+            title: doc['title'],
+            description: doc['description'],
             status: doc['status'],
             letter_link: doc['letter_link'],
-            material: doc['material'] ?? [],
-            budget: doc['budget'] ?? '-1',
+            timestamp: doc['timestamp'],
+            lastModified: doc['lastModified'],
+            material: materials,
+            budget: doc['budget'] ?? -1,
           ));
         }
       }
       return opportunities;
     } catch (e) {
-      print('Error fetching pending opportunities: $e');
+      print('Error fetching opportunities by state: $e');
       throw e;
     }
   }
 
   Future<void> updateOpportunityStatus(
-      String opportunityId, String newStatus) async {
+      String opportunityId, String newStatus, String path) async {
     try {
-      await _firestore.collection(_collectionName).doc(opportunityId).update({
-        'status': newStatus,
-      });
+      await _firestore
+          .collection(_collectionName)
+          .doc(opportunityId)
+          .update({'status': newStatus, 'letter_link': path});
     } catch (e) {
       print('Error updating opportunity status: $e');
       throw e;

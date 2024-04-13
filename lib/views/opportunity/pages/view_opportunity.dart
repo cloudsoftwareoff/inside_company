@@ -4,13 +4,15 @@ import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
 
 class ViewAllOpportunitiesPage extends StatelessWidget {
-  const ViewAllOpportunitiesPage({super.key});
+  final String state;
+  const ViewAllOpportunitiesPage({super.key,
+  required this.state});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<Opportunity>>(
-        future: OpportunityDB().fetchOpportunities(),
+        future: state== "ALL" ? OpportunityDB().fetchOpportunities(): OpportunityDB().fetchOpportunitiesByState(state),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -33,7 +35,7 @@ class ViewAllOpportunitiesPage extends StatelessWidget {
                       title: Text(opportunity.title),
                       subtitle: Text(opportunity.description),
                       trailing: opportunity.status == "PENDING"
-                          ?  Icon(
+                          ? Icon(
                               Icons.pending_actions,
                               color: Colors.amber,
                             )

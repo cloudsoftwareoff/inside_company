@@ -38,10 +38,8 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
               child: Icon(Icons.person_2))
         ],
         centerTitle: true,
-        title: Text(_currentPageIndex == 0
-            ? 'View Opportunity'
-            
-                : 'View Demands'),
+        title:
+            Text(_currentPageIndex == 0 ? 'View Opportunity' : 'View Demands'),
       ),
       body: PageView(
         controller: _pageController,
@@ -52,7 +50,7 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
         },
         children: [
           AddOpportunityPage(),
-          const ViewAllOpportunitiesPage(),
+          const ViewAllOpportunitiesPage(state: "ALL"),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

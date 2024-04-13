@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:inside_company/constant.dart';
 import 'package:inside_company/model/role_model.dart';
 import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/current_user.dart';
@@ -8,8 +10,10 @@ import 'package:inside_company/providers/users_list.dart';
 
 import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
+import 'package:inside_company/views/DER/der_manage.dart';
 import 'package:inside_company/views/admin/dashboard.dart';
 import 'package:inside_company/views/auth/main_auth.dart';
+import 'package:inside_company/views/demands/demands_manage.dart';
 import 'package:inside_company/views/invest/management.dart';
 import 'package:inside_company/views/opportunity/opportunity_manage.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
@@ -71,10 +75,7 @@ class _UserWrapperState extends State<UserWrapper> {
     }
     // Retrieve the current user
     String? currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    final usersProvider = Provider.of<UserListProvider>(context, listen: false);
-    final rolesProvider = Provider.of<RoleListProvider>(context, listen: false);
-    final currentUserProvider =
-        Provider.of<CurrentUserProvider>(context, listen: false);
+
     return FutureBuilder(
       future: Future.wait([
         UserDB().getUserById(currentUserId),
@@ -84,15 +85,12 @@ class _UserWrapperState extends State<UserWrapper> {
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            body: LoadingOverlay(
-                isLoading: true,
-                child: Center(
-                  child: Image.asset(
-                    "assets/img/logo.jpg",
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                  ),
-                )),
+            body: Center(
+              child: SpinKitChasingDots(
+                color: AppColors.primaryColor,
+                size: 150.0,
+              ),
+            ),
           );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -101,23 +99,17 @@ class _UserWrapperState extends State<UserWrapper> {
             FirebaseAuth.instance.signOut();
             return const MainAuth();
           }
+
           UserModel currentUser = snapshot.data?[0];
           List<RoleModel> roles = snapshot.data?[1] ?? [];
-
-          // usersProvider.updateList(snapshot.data?[2]);
-
-          //rolesProvider.updateRole(roles);
 
           RoleModel currentUserRole = roles.firstWhere(
             (role) => role.id == currentUser.roleId,
             //orElse: () => null,
           );
 
-          //  currentUserProvider.updateUser(currentUser);
-          //  currentUserProvider.updateRole(currentUserRole);
-          // Check the role of the current user
           if (currentUserRole.id == "sudo") {
-            return const OpportunityManagementPage();
+            return const DERMainPage();
           } else {
             return ProfilePage(userdata: currentUser);
           }
