@@ -67,7 +67,7 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
           const ViewAllOpportunitiesPage(
             state: "ALL",
           ),
-          ConfirmedOpportunity()
+        const  ConfirmedOpportunity()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

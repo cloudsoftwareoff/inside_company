@@ -6,16 +6,17 @@ import 'package:inside_company/services/firestore/opportunitydb.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-class ViewDemands extends StatefulWidget {
-  const ViewDemands({Key? key}) : super(key: key);
+class DivisionViewDemand extends StatefulWidget {
+  const DivisionViewDemand({Key? key}) : super(key: key);
 
   @override
-  _ViewDemandsState createState() => _ViewDemandsState();
+  _DivisionViewDemandState createState() => _DivisionViewDemandState();
 }
+
 
 bool _isLoading = false;
 
-class _ViewDemandsState extends State<ViewDemands> {
+class _DivisionViewDemandState extends State<DivisionViewDemand> {
   late List<Demand> _demands;
   late GlobalKey<AnimatedListState> _listKey;
 
@@ -53,6 +54,7 @@ class _ViewDemandsState extends State<ViewDemands> {
             TextButton(
               onPressed: () async {
                 try {
+                  // Show loading indicator
                   setState(() {
                     _isLoading = true;
                   });
@@ -61,11 +63,14 @@ class _ViewDemandsState extends State<ViewDemands> {
                   demand.state = "CONFIRMED";
                   await DemandDB().updateDemand(demand);
 
+                  // Show confirmation message
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Demand Confirmed")));
 
+                  // Close the dialog
                   Navigator.of(context).pop();
 
+                  // Hide loading indicator
                   setState(() {
                     _isLoading = false;
                   });
@@ -73,8 +78,7 @@ class _ViewDemandsState extends State<ViewDemands> {
                   print('confirmed');
                 } catch (e) {
                   print("Error confirming demand: $e");
-
-                  // Hide loading indicator
+            
                   setState(() {
                     _isLoading = false;
                   });
@@ -135,6 +139,8 @@ class _ViewDemandsState extends State<ViewDemands> {
         elevation: 8,
         color: Colors.white10,
         child: ListTile(
+          
+          
           title: Text(opportunity.title),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,11 +157,7 @@ class _ViewDemandsState extends State<ViewDemands> {
           ),
           trailing: demand.state == "CONFIRMED"
               ? Text("Demand Confirmed")
-              : ElevatedButton(
-                  onPressed: () {
-                    _onItemTap(demand, context);
-                  },
-                  child: const Text("Confirm")),
+              : Text("Pending")
         ),
       ),
     );

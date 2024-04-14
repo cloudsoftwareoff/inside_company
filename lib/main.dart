@@ -14,6 +14,7 @@ Thank you for your understanding.
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/providers/role_provider.dart';
@@ -30,6 +31,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   await Supabase.initialize(
     url: 'https://enmkhvokjdaplyopffxy.supabase.co',
     anonKey:
