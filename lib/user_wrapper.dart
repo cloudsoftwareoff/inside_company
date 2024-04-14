@@ -10,6 +10,7 @@ import 'package:inside_company/providers/users_list.dart';
 import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
 import 'package:inside_company/views/DER/der_manage.dart';
+import 'package:inside_company/views/admin/dashboard.dart';
 import 'package:inside_company/views/auth/main_auth.dart';
 import 'package:inside_company/views/demands/demands_manage.dart';
 import 'package:inside_company/views/invest/management.dart';
@@ -59,7 +60,6 @@ class _UserWrapperState extends State<UserWrapper> {
 
   @override
   void initState() {
-  
     super.initState();
     _fetchData();
   }
@@ -79,7 +79,6 @@ class _UserWrapperState extends State<UserWrapper> {
         UserDB().getAllUsers()
       ]),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             body: Center(
@@ -115,7 +114,8 @@ class _UserWrapperState extends State<UserWrapper> {
                 return const InvestmentManagePage();
               case "HIMx3XKL49j3w8qEsnFk":
                 return const DERMainPage();
-
+              case "sudo":
+                return const DashBoard();
               default:
                 return ProfilePage(userdata: currentUser);
             }

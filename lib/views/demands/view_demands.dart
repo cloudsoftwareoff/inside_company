@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:inside_company/model/demand.dart';
 import 'package:inside_company/model/opportunity.dart';
-
 import 'package:inside_company/services/firestore/demand_db.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
 import 'package:intl/intl.dart';
@@ -141,6 +139,7 @@ class _ViewDemandsState extends State<ViewDemands> {
         elevation: 8,
         color: Colors.white10,
         child: ListTile(
+          
           title: Text(opportunity.title),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
