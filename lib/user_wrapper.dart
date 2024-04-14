@@ -7,17 +7,14 @@ import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/providers/role_provider.dart';
 import 'package:inside_company/providers/users_list.dart';
-
 import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
 import 'package:inside_company/views/DER/der_manage.dart';
-import 'package:inside_company/views/admin/dashboard.dart';
 import 'package:inside_company/views/auth/main_auth.dart';
 import 'package:inside_company/views/demands/demands_manage.dart';
 import 'package:inside_company/views/invest/management.dart';
-import 'package:inside_company/views/opportunity/opportunity_manage.dart';
+import 'package:inside_company/views/direction_info/opportunity_manage.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
-import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
 class UserWrapper extends StatefulWidget {
@@ -49,7 +46,6 @@ class _UserWrapperState extends State<UserWrapper> {
     List<RoleModel> roles = data[1] ?? [];
 
     usersProvider.updateList(data[2]);
-
     rolesProvider.updateRole(roles);
 
     RoleModel currentUserRole = roles.firstWhere(
@@ -63,7 +59,7 @@ class _UserWrapperState extends State<UserWrapper> {
 
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
     _fetchData();
   }
@@ -83,6 +79,7 @@ class _UserWrapperState extends State<UserWrapper> {
         UserDB().getAllUsers()
       ]),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             body: Center(
@@ -107,9 +104,21 @@ class _UserWrapperState extends State<UserWrapper> {
             (role) => role.id == currentUser.roleId,
             //orElse: () => null,
           );
+          if (currentUser.verified == "yes") {
+            switch (currentUserRole.id) {
+              case "atf0bwtJzUgFXW3LI9GU":
+                return const OpportunityManagementPage();
+              case "efdUNnst7SjXuFOasYQ8":
+                return const DemandManagementPage();
 
-          if (currentUserRole.id == "sudo") {
-            return const DERMainPage();
+              case "OAtDsVlpVMQsnAjgPZ9z":
+                return const InvestmentManagePage();
+              case "HIMx3XKL49j3w8qEsnFk":
+                return const DERMainPage();
+
+              default:
+                return ProfilePage(userdata: currentUser);
+            }
           } else {
             return ProfilePage(userdata: currentUser);
           }

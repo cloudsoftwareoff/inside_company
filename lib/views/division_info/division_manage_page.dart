@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
-import 'package:inside_company/views/opportunity/pages/add_opportunity.dart';
-import 'package:inside_company/views/opportunity/pages/view_opportunity.dart';
+import 'package:inside_company/views/direction_info/pages/add_opportunity.dart';
+import 'package:inside_company/views/direction_info/pages/view_opportunity.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
