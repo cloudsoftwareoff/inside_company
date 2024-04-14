@@ -106,9 +106,9 @@ class _UserWrapperState extends State<UserWrapper> {
           if (currentUser.verified == "yes") {
             switch (currentUserRole.id) {
               case "atf0bwtJzUgFXW3LI9GU":
-                return const OpportunityManagementPage();
-              case "efdUNnst7SjXuFOasYQ8":
                 return const DemandManagementPage();
+              case "efdUNnst7SjXuFOasYQ8":
+                return const OpportunityManagementPage();
 
               case "OAtDsVlpVMQsnAjgPZ9z":
                 return const InvestmentManagePage();
