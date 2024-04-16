@@ -18,12 +18,4 @@ class CurrentUserProvider extends ChangeNotifier {
   }
 }
 
-    // final currentUserProvider = Provider.of<CurrentUserProvider>(context, listen: false);
-
-    // Update the user data
-    // currentUserProvider.updateUser(UserModel(/* updated user data */));
-
-    // Update the role data
-    // currentUserProvider.updateRole(RoleModel(/* updated role data */));
-
 

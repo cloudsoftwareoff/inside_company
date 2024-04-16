@@ -19,9 +19,38 @@ class Opportunity {
     required this.description,
     required this.status,
     required this.budget,
-    required this.material,
+    required this.material, // Updated parameter name: materials
     this.timestamp,
     this.lastModified,
     this.letter_link,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'addedBy': addedBy,
+      'title': title,
+      'description': description,
+      'material': material, // Updated parameter name: materials
+      'status': status,
+      'budget': budget,
+      'timestamp': timestamp,
+      'lastModified': lastModified,
+      'letter_link': letter_link,
+    };
+  }
+
+  static Opportunity fromMap(Map<String, dynamic> map, String id) {
+    return Opportunity(
+      id: id,
+      addedBy: map['addedBy'],
+      title: map['title'],
+      description: map['description'],
+      material: List<String>.from(map['material'] ?? []),
+      status: map['status'],
+      budget: map['budget'],
+      timestamp: map['timestamp'],
+      lastModified: map['lastModified'],
+      letter_link: map['letter_link'],
+    );
+  }
 }

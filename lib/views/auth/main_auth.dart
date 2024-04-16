@@ -29,12 +29,6 @@ class _MainAuthState extends State<MainAuth> {
               controller: controller,
             );
           }
-
-          // else {
-          //   return VerifyScreen(
-          //     controller: controller,
-          //   );
-          // }
         },
       ),
     );

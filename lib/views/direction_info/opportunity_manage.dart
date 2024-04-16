@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/views/demands/confirmed_opportunity.dart';
@@ -19,17 +21,58 @@ class OpportunityManagementPage extends StatefulWidget {
 class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.ref().child('notification/dir_info/');
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  List<String> dataList = [];
+  void _initializeNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void _subscribeToRealtimeUpdates() {
+    _databaseReference.onValue.listen((event) {
+      setState(() {
+        final data = event.snapshot.value as Map<String, dynamic>;
+        _showNotification(data);
+      });
+    });
+  }
+
+  Future<void> _showNotification(Map<String, dynamic> data) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'your_channel_id', // Change this to your channel ID
+      'your_channel_name', // Change this to your channel name
+      //'your_channel_description', // Change this to your channel description
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      data['title'] ?? 'Notification Title',
+      'ID: ${data['id'] ?? 'N/A'}, R: ${data['r'] ?? 'N/A'}', // Customize notification body as needed
+      platformChannelSpecifics,
+      payload: 'item x', // You can optionally add a payload here
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initializeNotifications();
+    _subscribeToRealtimeUpdates();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final databaseReference = FirebaseDatabase.instance.ref();
-
-    databaseReference.onValue.listen((event) {
-      final data = event.snapshot.value;
-      //
-      print("db:\n");
-      print(data);
-    });
     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
     final currentUser = currentUserProvider.currentuser;
     return Scaffold(
@@ -40,20 +83,19 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
         actions: [
           GestureDetector(
               onTap: () {
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                    userdata: currentUser!,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                      userdata: currentUser!,
+                    ),
                   ),
                 );
               },
               child: Icon(Icons.person_2))
         ],
         centerTitle: true,
-        title: Text(_currentPageIndex == 0
-            ? 'Add Opportunity'
-            : _currentPageIndex == 1
-                ? 'View All Opportunities'
-                : 'Send Demands'),
+        title: Text(currentUser!.username),
       ),
       body: PageView(
         controller: _pageController,
@@ -67,7 +109,7 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
           const ViewAllOpportunitiesPage(
             state: "ALL",
           ),
-        const  ConfirmedOpportunity()
+          const ConfirmedOpportunity()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

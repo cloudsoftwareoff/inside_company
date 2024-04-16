@@ -6,6 +6,8 @@ import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
 
 class AddOpportunityPage extends StatefulWidget {
+  const AddOpportunityPage({super.key});
+
   @override
   _AddOpportunityPageState createState() => _AddOpportunityPageState();
 }
@@ -13,16 +15,32 @@ class AddOpportunityPage extends StatefulWidget {
 class _AddOpportunityPageState extends State<AddOpportunityPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
   final TextEditingController _budgetController = TextEditingController();
   final TextEditingController _materialController = TextEditingController();
-  List<String> _materials = [];
+  final List<String> _materials = [];
 
   void _addOpportunity() {
+    if (_titleController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
+        _budgetController.text.isEmpty ||
+        _materials.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    try {
+      double.parse(_budgetController.text);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Budget must be a valid number')),
+      );
+      return;
+    }
     Opportunity opportunity = Opportunity(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      addedBy: FirebaseAuth
-          .instance.currentUser!.uid, // Assuming the admin adds opportunities
+      addedBy: FirebaseAuth.instance.currentUser!.uid,
       title: _titleController.text,
       description: _descriptionController.text,
       budget: double.parse(_budgetController.text),
@@ -33,10 +51,8 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
     );
 
     OpportunityDB().addOpportunity(opportunity).then((_) {
-      // Clear text fields
       _titleController.clear();
       _descriptionController.clear();
-      _statusController.clear();
       _budgetController.clear();
       setState(() {
         _materials.clear();
@@ -71,11 +87,9 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _budgetController.dispose();
     _titleController.dispose();
-    _statusController.dispose();
     _materialController.dispose();
     _descriptionController.dispose();
   }
@@ -83,71 +97,69 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(
+            Image.asset("assets/img/op.png"),
+            TextFormField(
               controller: _titleController,
               decoration: const InputDecoration(
                 labelText: 'Title',
-                border: OutlineInputBorder(),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16.0),
-            TextField(
+            TextFormField(
               controller: _descriptionController,
+              maxLines: 3,
               decoration: const InputDecoration(
                 labelText: 'Description',
-                border: OutlineInputBorder(),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16.0),
-            TextField(
+            TextFormField(
               controller: _budgetController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                labelText: 'Budget',
-                border: OutlineInputBorder(),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                labelText: 'Budget (TND)',
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16.0),
-            TextField(
-              controller: _materialController,
-              decoration: const InputDecoration(
-                labelText: 'Add Material (, or ENTER)',
-                border: OutlineInputBorder(),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-              ),
-              onChanged: (value) {
-                if (value.endsWith(',')) {
-                  String material = value.substring(0, value.length - 1).trim();
-                  if (material.isNotEmpty) {
-                    _addMaterial(material);
-                    _materialController.clear();
-                  }
-                }
-              },
-              onSubmitted: _addMaterial,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _materialController,
+                    decoration: const InputDecoration(
+                      labelText: 'Add Material',
+                      border: const OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      if (value.endsWith(',')) {
+                        String material =
+                            value.substring(0, value.length - 1).trim();
+                        if (material.isNotEmpty) {
+                          _addMaterial(material);
+                          _materialController.clear();
+                        }
+                      }
+                    },
+                    onFieldSubmitted: _addMaterial,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () =>
+                      _addMaterial(_materialController.text.trim()),
+                ),
+              ],
             ),
-            // ListView.builder(
-            //   shrinkWrap: true,
-            //   itemCount: _matchingMaterials.length,
-            //   itemBuilder: (context, index) {
-            //     return ListTile(
-            //       title: Text(_matchingMaterials[index]),
-            //       onTap: () => _addMaterial(_matchingMaterials[index]),
-            //     );
-            //   },
-            // ),
+            const SizedBox(height: 16.0),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,

@@ -30,9 +30,11 @@ class OpportunityDB {
       QuerySnapshot snapshot =
           await _firestore.collection(_collectionName).get();
       List<Opportunity> opportunities = [];
-      List<String> materials = [];
-      snapshot.docs.forEach((doc) {
-        materials = doc['material']?.cast<String>() ?? [];
+
+      for (var doc in snapshot.docs) {
+        List<String> materials =
+            doc['material']?.cast<String>() ?? []; // Retrieve materials list
+
         opportunities.add(Opportunity(
           id: doc['id'],
           addedBy: doc['addedby'],
@@ -41,12 +43,12 @@ class OpportunityDB {
           status: doc['status'],
           timestamp: doc['timestamp'],
           lastModified: doc['lastModified'],
-          material: materials,
+          material: materials, // Assign materials list to the opportunity
           budget: doc['budget'] != null ? doc['budget'] : '-1',
           letter_link: doc['letter_link'],
         ));
-        materials.clear();
-      });
+      }
+
       return opportunities;
     } catch (e) {
       print('Error fetching opportunities: $e');

@@ -29,9 +29,12 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
         actions: [
           GestureDetector(
               onTap: () {
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                    userdata: currentUser!,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                      userdata: currentUser!,
+                    ),
                   ),
                 );
               },

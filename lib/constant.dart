@@ -15,15 +15,11 @@ ThemeData myTheme = ThemeData(
     colorScheme: ColorScheme.fromSwatch(
       accentColor: AppColors.secondaryColor, //buttons highlights
     ),
-    scaffoldBackgroundColor: Color(0xffDAD3C8),
+    scaffoldBackgroundColor: const Color(0xffDAD3C8),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.secondaryColor,
     ),
-    cardTheme: CardTheme(color: Colors.white, elevation: 8),
+    cardTheme: const CardTheme(color: Colors.white, elevation: 8),
     bottomNavigationBarTheme:
-        BottomNavigationBarThemeData(backgroundColor: Colors.white)
-    // textTheme: TextTheme(
-    //   bodyLarge: TextStyle(color: AppColors.secondaryColor),
-    //   bodyMedium: TextStyle(color: AppColors.hintTextColor),
-    // ),
-    );
+        const BottomNavigationBarThemeData(backgroundColor: Colors.white),
+    listTileTheme: const ListTileThemeData(tileColor: Colors.white));

@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
-import 'package:inside_company/views/demands/details.dart';
+import 'package:inside_company/views/demands/opportunity_details.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -40,9 +40,7 @@ class _ConfirmedOpportunityState extends State<ConfirmedOpportunity> {
               return const Center(child: Text('No opportunities found.'));
             } else {
               List<Opportunity> opportunities = snapshot.data!;
-              for (Opportunity opportunity in opportunities) {
-                print("Materials: ${opportunity.material.join(', ')}");
-              }
+            
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: ListView.builder(
@@ -125,6 +123,7 @@ class OpportunityCard extends StatelessWidget {
       color: Colors.white,
       elevation: 10,
       child: ListTile(
+        tileColor: Colors.white,
         title: Text(
           opportunity.title,
           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -133,14 +132,30 @@ class OpportunityCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            Text(
-              "Description: ${opportunity.description}",
-              style: const TextStyle(fontSize: 14),
+            Row(
+              children: [
+                const Text(
+                  "Description:",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  opportunity.description,
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ],
             ),
             const SizedBox(height: 4),
-            Text(
-              "Budget: ${opportunity.budget.toStringAsFixed(2)} TND",
-              style: const TextStyle(fontSize: 14),
+            Row(
+              children: [
+                const Text(
+                  "Budget: ",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  " ${opportunity.budget.toStringAsFixed(2)} TND",
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ],
             ),
             const SizedBox(height: 4),
             Text(
@@ -154,7 +169,7 @@ class OpportunityCard extends StatelessWidget {
             ),
           ],
         ),
-        trailing: const Icon(Icons.arrow_forward),
+        trailing: const Icon(Icons.launch),
         onTap: () {
           Navigator.push(
             context,
@@ -168,9 +183,9 @@ class OpportunityCard extends StatelessWidget {
           onTap: () async {
             await downloadFile(opportunity, context);
           },
-          child: Icon(
-            Icons.downhill_skiing,
-            color: AppColors.secondaryColor,
+          child: const Icon(
+            Icons.download,
+            color: Colors.blueAccent,
           ),
         ),
       ),

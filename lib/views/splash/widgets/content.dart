@@ -12,7 +12,7 @@ class OnboardingContents {
 
 List<OnboardingContents> contents = [
   OnboardingContents(
-    title: "Welcome to the Hub!",
+    title: "Welcome!",
     image: "assets/img/image1.png",
     desc:
         "Welcome to the Tunisian Chemical Group's project tracking hub! Let's navigate through success together",

@@ -17,6 +17,12 @@ bool loading = false;
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 15, top: 15),
-                  //   child: Image.asset(
-                  //     "assets/img/logo.jpg",
-                  //     width: 413,
-                  //     height: 207,
-                  //   ),
-                  // ),
-                  const SizedBox(
-                    height: 18,
-                  ),
                   Padding(
-                    padding: const EdgeInsets.all(50),
+                    padding: const EdgeInsets.all(10),
                     child: Center(
                       child: Card(
                         color: Colors.black87,
@@ -158,10 +153,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                               _emailController.text,
                                               _passController.text);
 
+                                      setState(() {
+                                        loading = false;
+                                      });
                                       if (mounted && authResult.user != null) {
-                                        setState(() {
-                                          loading = false;
-                                        });
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(

@@ -18,10 +18,9 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
 
-    final databaseReference = FirebaseDatabase.instance.ref();
+  final databaseReference = FirebaseDatabase.instance.ref();
   @override
   Widget build(BuildContext context) {
-   
     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
     final currentUser = currentUserProvider.currentuser;
     return Scaffold(
@@ -32,9 +31,12 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
         actions: [
           GestureDetector(
               onTap: () {
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                    userdata: currentUser!,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                      userdata: currentUser!,
+                    ),
                   ),
                 );
               },
@@ -52,7 +54,9 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
         },
         children: const [
           ViewPendingOpportunity(),
-          ViewAllOpportunitiesPage(state: "ALL",),
+          ViewAllOpportunitiesPage(
+            state: "ALL",
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -21,11 +21,18 @@ class EditProfilePage extends StatefulWidget {
 String newEmail = "none";
 bool loading = false;
 
+String myName = "";
+
 class _EditProfilePageState extends State<EditProfilePage> {
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final currentUserProvider = Provider.of<CurrentUserProvider>(context);
-
+    final currentUserProvider =
+        Provider.of<CurrentUserProvider>(context, listen: true);
+    _nameController.text = widget.user.username;
+    _emailController.text = FirebaseAuth.instance.currentUser!.email ?? "";
     return Builder(
         builder: (context) => Scaffold(
               appBar: buildAppBar(context),
@@ -41,27 +48,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       onClicked: () async {},
                     ),
                     const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Full Name',
-                      text: widget.user.username,
-                      onChanged: (name) {
-                        if (name.length > 4) {
-                          widget.user.username = name;
-                        }
-                      },
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Full Name:',
+                        border: const OutlineInputBorder(),
+                      ),
                     ),
                     const SizedBox(height: 24),
                     Visibility(
                       visible: FirebaseAuth.instance.currentUser!.uid ==
                           widget.user.uid,
-                      child: TextFieldWidget(
-                        label: 'Email',
-                        text: widget.user.email,
-                        onChanged: (email) {
-                          if (isValidEmail(email)) {
-                            newEmail = email;
-                          }
-                        },
+                      child: TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                          labelText: 'Email Address:',
+                          border: const OutlineInputBorder(),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -71,10 +74,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           setState(() {
                             loading = !loading;
                           });
-                          if (newEmail == "none") {
-                            await FirebaseAuth.instance.currentUser!
-                                .verifyBeforeUpdateEmail(newEmail);
+                          if (_emailController.text.contains("@") &&
+                              _emailController.text !=
+                                  FirebaseAuth.instance.currentUser!.email) {
+                            try {
+                              await FirebaseAuth.instance.currentUser!
+                                  .verifyBeforeUpdateEmail(newEmail);
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())));
+                            }
                           }
+
+                          widget.user.username = _nameController.text;
                           await UserDB().updateUser(widget.user);
                           currentUserProvider.updateUser(widget.user);
 

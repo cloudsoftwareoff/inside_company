@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
+import 'package:inside_company/views/invest/view_opportunities.dart';
 
 class ViewAllOpportunitiesPage extends StatelessWidget {
   final String state;
-  const ViewAllOpportunitiesPage({super.key,
-  required this.state});
+  const ViewAllOpportunitiesPage({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<Opportunity>>(
-        future: state== "ALL" ? OpportunityDB().fetchOpportunities(): OpportunityDB().fetchOpportunitiesByState(state),
+        future: state == "ALL"
+            ? OpportunityDB().fetchOpportunities()
+            : OpportunityDB().fetchOpportunitiesByState(state),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -28,28 +30,8 @@ class ViewAllOpportunitiesPage extends StatelessWidget {
                 itemCount: opportunities.length,
                 itemBuilder: (context, index) {
                   Opportunity opportunity = opportunities[index];
-                  return Card(
-                    color: Colors.white,
-                    elevation: 10,
-                    child: ListTile(
-                      title: Text(opportunity.title),
-                      subtitle: Text(opportunity.description),
-                      trailing: opportunity.status == "PENDING"
-                          ? Icon(
-                              Icons.pending_actions,
-                              color: Colors.amber,
-                            )
-                          : opportunity.status == "CONFIRMED"
-                              ? const Icon(
-                                  Icons.done_all_rounded,
-                                  color: Colors.green,
-                                )
-                              : const Icon(
-                                  Icons.undo,
-                                  color: Colors.red,
-                                ),
-                    ),
-                  );
+                  return OpportunityCardD(opportunity: opportunity);
+
                 },
               ),
             );

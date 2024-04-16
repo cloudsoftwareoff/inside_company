@@ -5,6 +5,7 @@ import 'package:inside_company/services/firestore/demand_db.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ViewDemands extends StatefulWidget {
   const ViewDemands({Key? key}) : super(key: key);
@@ -133,8 +134,9 @@ class _ViewDemandsState extends State<ViewDemands> {
       sizeFactor: animation,
       child: Card(
         elevation: 8,
-        color: Colors.white10,
+        color: Colors.white,
         child: ListTile(
+          tileColor: Colors.white,
           title: Text(opportunity.title),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

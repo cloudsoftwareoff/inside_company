@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '453254468404',
     projectId: 'inside-company',
     authDomain: 'inside-company.firebaseapp.com',
+    databaseURL: 'https://inside-company-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'inside-company.appspot.com',
     measurementId: 'G-3WWMMWZ4FC',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:453254468404:android:e7786d4d49841b58890b61',
     messagingSenderId: '453254468404',
     projectId: 'inside-company',
+    databaseURL: 'https://inside-company-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'inside-company.appspot.com',
   );
 
@@ -66,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:453254468404:ios:815e7c531c3579a0890b61',
     messagingSenderId: '453254468404',
     projectId: 'inside-company',
+    databaseURL: 'https://inside-company-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'inside-company.appspot.com',
     iosBundleId: 'com.example.insideCompany',
   );

@@ -28,13 +28,16 @@ class _DERMainPageState extends State<DERMainPage> {
       appBar: AppBar(
         leading: GestureDetector(
             onTap: () async => await UserAuth().signOut(context),
-            child: Icon(Icons.logout)),
+            child: const Icon(Icons.logout)),
         actions: [
           GestureDetector(
               onTap: () {
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                    userdata: currentUser!,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                      userdata: currentUser!,
+                    ),
                   ),
                 );
               },

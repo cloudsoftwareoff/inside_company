@@ -32,16 +32,27 @@ class _DemandManagementPageState extends State<DemandManagementPage> {
         actions: [
           GestureDetector(
               onTap: () {
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                    userdata: currentUser!,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                      userdata: currentUser!,
+                    ),
                   ),
                 );
               },
               child: Icon(Icons.person_2))
         ],
         centerTitle: true,
-        title: Text('Hello ${currentUser!.username}'),
+        title: GestureDetector(
+            onTap: () {
+              MaterialPageRoute(
+                builder: (context) => ProfilePage(
+                  userdata: currentUser,
+                ),
+              );
+            },
+            child: Text('Hello ${currentUser!.username}')),
       ),
       body: PageView(
         controller: _pageController,

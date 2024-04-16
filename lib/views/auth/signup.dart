@@ -11,6 +11,7 @@ import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
 import 'package:inside_company/user_wrapper.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
 class SingUpScreen extends StatefulWidget {
   const SingUpScreen({super.key, required this.controller});
@@ -29,11 +30,18 @@ class _SingUpScreenState extends State<SingUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    
+    super.dispose();
+    emailController.dispose();
+    _passController.dispose();
+    nameController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-
     void handleRoleSelection(RoleModel? role) {
       setState(() {
         selectedRole = role;
@@ -318,7 +326,9 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                             roleId: selectedRole!.id,
                                             verified: "no",
                                             region: selectedRegion!.id));
-
+                                        setState(() {
+                                          isLoad = !isLoad;
+                                        });
                                         if (mounted) {
                                           Navigator.pushReplacement(
                                             context,
@@ -328,9 +338,6 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                           );
                                         }
                                       }
-                                      setState(() {
-                                        isLoad = !isLoad;
-                                      });
                                     },
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor:
@@ -373,7 +380,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                               const Duration(milliseconds: 500),
                                           curve: Curves.ease);
                                     },
-                                    child:  Text(
+                                    child: Text(
                                       'Log In ',
                                       style: TextStyle(
                                         color: AppColors.secondaryColor,
