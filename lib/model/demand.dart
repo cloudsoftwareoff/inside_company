@@ -7,6 +7,7 @@ class Demand {
   Timestamp dateDA;
   List<String> materials;
   String state;
+  String region;
 
   Demand({
     required this.id,
@@ -15,6 +16,7 @@ class Demand {
     required this.materials,
     required this.dateDA,
     required this.state,
+    required this.region
   });
 
   Map<String, dynamic> toMap() {
@@ -24,6 +26,7 @@ class Demand {
       'materials': materials,
       'dateDA': dateDA,
       'state': state,
+      'region':region
     };
   }
 
@@ -35,6 +38,7 @@ class Demand {
       materials: List<String>.from(map['materials'] ?? []),
       dateDA: map['dateDA'],
       state: map['state'],
+      region: map['region']
     );
   }
 }

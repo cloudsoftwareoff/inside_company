@@ -4,7 +4,6 @@ import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/services/users/userdb.dart';
-import 'package:inside_company/views/admin/dashboard.dart';
 import 'package:inside_company/views/auth/main_auth.dart';
 import 'package:inside_company/views/profile/edit_profile.dart';
 import 'package:inside_company/views/profile/widgets/appbar.dart';
@@ -27,7 +26,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
-    final currentUser = currentUserProvider.currentuser;
     final currentUserRole = currentUserProvider.user_role;
     return Builder(
       builder: (context) => Scaffold(
@@ -61,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 20,
               ),
               Visibility(
-                  visible: widget.userdata.verified == "no" &&
+                  visible: widget.userdata.verified != "yes" &&
                       currentUserRole!.id == "sudo",
                   child: Center(
                       child: ButtonWidget(

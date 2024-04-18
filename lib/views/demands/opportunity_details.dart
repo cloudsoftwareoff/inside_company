@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:inside_company/providers/current_user.dart';
 import 'package:intl/intl.dart';
 import 'package:inside_company/model/demand.dart';
 import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/services/firestore/demand_db.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
 class OpportunityDetailsPage extends StatefulWidget {
   final Opportunity opportunity;
@@ -28,6 +30,7 @@ class _OpportunityDetailsPageState extends State<OpportunityDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Opportunity Details'),
@@ -181,6 +184,7 @@ class _OpportunityDetailsPageState extends State<OpportunityDetailsPage> {
                         opportunityId: widget.opportunity.id,
                         budget: double.parse(_budgetController.text),
                         state: "PENDING",
+                        region:currentUserProvider.currentuser!.region ,
                         materials: widget.opportunity.material,
                         dateDA: Timestamp.now(),
                       ),

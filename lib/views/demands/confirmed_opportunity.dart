@@ -1,4 +1,4 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:inside_company/model/opportunity.dart';
@@ -34,7 +34,7 @@ class _ConfirmedOpportunityState extends State<ConfirmedOpportunity> {
               return const Center(child: Text('No opportunities found.'));
             } else {
               List<Opportunity> opportunities = snapshot.data!;
-            
+
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: ListView.builder(
@@ -132,9 +132,11 @@ class OpportunityCard extends StatelessWidget {
                   "Description:",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  opportunity.description,
-                  style: const TextStyle(fontSize: 14),
+                Expanded(
+                  child: Text(
+                    opportunity.description,
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ),
               ],
             ),

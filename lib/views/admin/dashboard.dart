@@ -8,6 +8,7 @@ import 'package:inside_company/providers/role_provider.dart';
 import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
+import 'package:inside_company/views/admin/dashboard_screen.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +55,6 @@ class _DashBoardState extends State<DashBoard> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
     final currentUser = currentUserProvider.currentuser;
-    List<UserModel> users = [];
 
     return SafeArea(
       child: Scaffold(
@@ -93,18 +93,11 @@ class _DashBoardState extends State<DashBoard> with WidgetsBindingObserver {
                     _currentPageIndex = index;
                   });
                 },
-                children: const [
-                  RolePage(verified: true),
-                  RolePage(verified: false),
-                  // Add more pages for other roles as needed
+                children: [
+                  const RolePage(verified: true),
+                  const RolePage(verified: false),
+                  DashboardScreen()
                 ],
-              ),
-            ),
-            Text(
-              _currentPageIndex == 0 ? "Verified Users" : "Pending Users",
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
               ),
             ),
           ],
@@ -119,19 +112,22 @@ class _DashBoardState extends State<DashBoard> with WidgetsBindingObserver {
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
               );
-              _navigateToPage(_rolePages.keys.toList()[index]);
+              //  _navigateToPage(_rolePages.keys.toList()[index]);
             });
           },
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.admin_panel_settings),
-              label: 'Admin',
+              label: 'Users',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Regular',
+              label: 'Unverified',
             ),
-            // Add more items for additional roles
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard),
+              label: 'Dashboard',
+            ),
           ],
         ),
       ),
@@ -156,11 +152,9 @@ class RolePage extends StatelessWidget {
   const RolePage({Key? key, required this.verified}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
-      future:Future.wait([ UserDB().getVerifiedUsers(verified),
-      RoleService().fetchRoles()
-      ]),
+      future: Future.wait(
+          [UserDB().getVerifiedUsers(verified), RoleService().fetchRoles()]),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -170,16 +164,15 @@ class RolePage extends StatelessWidget {
           return const Center(child: Text('No users found.'));
         } else {
           List<UserModel> users = snapshot.data?[0] ?? [];
-          
+
           List<RoleModel> roles = snapshot.data?[1] ?? [];
-          
+
           return ListView.builder(
             itemCount: users.length,
             itemBuilder: (context, index) {
               UserModel user = users[index];
               RoleModel user_role = roles.firstWhere(
                 (element) => element.id == user.roleId,
-
               );
               return Card(
                 color: Colors.white,
@@ -231,7 +224,7 @@ class RolePage extends StatelessWidget {
                         ),
                       );
                     },
-                    child:  Icon(
+                    child: Icon(
                       Icons.launch,
                       color: AppColors.primaryColor,
                     ),

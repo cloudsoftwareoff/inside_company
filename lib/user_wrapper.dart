@@ -87,10 +87,18 @@ class _UserWrapperState extends State<UserWrapper> {
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            body: Center(
-              child: SpinKitChasingDots(
-                color: AppColors.primaryColor,
-                size: 150.0,
+            body: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        "assets/img/logo.jpg",
+                      ),
+                      fit: BoxFit.contain)),
+              child: Center(
+                child: SpinKitChasingDots(
+                  color: AppColors.primaryColor,
+                  size: 150.0,
+                ),
               ),
             ),
           );

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/current_user.dart';
@@ -24,8 +27,16 @@ bool loading = false;
 String myName = "";
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+final  TextEditingController _nameController = TextEditingController();
+final  TextEditingController _emailController = TextEditingController();
+// Future uploadImage(File file) async {
+//   final storage = FirebaseStorage.instance;
+//   final ref = storage.ref().child('profile_images/${DateTime.now().millisecondsSinceEpoch}');
+//   await ref.putFile(file);
+
+//   final url = await ref.getDownloadURL();
+//   print('Uploaded image URL: $url');
+// }
 
   @override
   Widget build(BuildContext context) {

@@ -10,16 +10,26 @@ class AppColors {
 }
 
 ThemeData myTheme = ThemeData(
-    //brightness: Brightness.light,
-    //primaryColor: Colors.white,
-    colorScheme: ColorScheme.fromSwatch(
-      accentColor: AppColors.secondaryColor, //buttons highlights
+  colorScheme: ColorScheme.fromSwatch(
+    accentColor: AppColors.secondaryColor, //buttons highlights
+  ),
+  scaffoldBackgroundColor: const Color(0xffDAD3C8),
+  appBarTheme: AppBarTheme(
+    backgroundColor: AppColors.secondaryColor,
+  ),
+  cardTheme: const CardTheme(color: Colors.white, elevation: 8),
+  bottomNavigationBarTheme:
+      const BottomNavigationBarThemeData(backgroundColor: Colors.white),
+  listTileTheme: const ListTileThemeData(tileColor: Colors.white),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryColor),
+      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
     ),
-    scaffoldBackgroundColor: const Color(0xffDAD3C8),
-    appBarTheme: AppBarTheme(
-      backgroundColor: AppColors.secondaryColor,
-    ),
-    cardTheme: const CardTheme(color: Colors.white, elevation: 8),
-    bottomNavigationBarTheme:
-        const BottomNavigationBarThemeData(backgroundColor: Colors.white),
-    listTileTheme: const ListTileThemeData(tileColor: Colors.white));
+  ),
+);
