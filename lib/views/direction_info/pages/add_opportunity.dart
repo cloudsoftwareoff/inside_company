@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/model/opportunity.dart';
+import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
+import 'package:provider/provider.dart';
 
 class AddOpportunityPage extends StatefulWidget {
   const AddOpportunityPage({super.key});
@@ -38,6 +40,7 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
       );
       return;
     }
+    final currentUserProvider = Provider.of<CurrentUserProvider>(context);
     Opportunity opportunity = Opportunity(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       addedBy: FirebaseAuth.instance.currentUser!.uid,
@@ -45,6 +48,7 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
       description: _descriptionController.text,
       budget: double.parse(_budgetController.text),
       material: _materials,
+      region: currentUserProvider.currentuser!.region,
       timestamp: Timestamp.now(),
       lastModified: Timestamp.now(),
       status: "PENDING",
@@ -102,7 +106,6 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image.asset("assets/img/op.png"),
             TextFormField(
               controller: _titleController,
               decoration: const InputDecoration(
@@ -154,8 +157,7 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.add),
-                  onPressed: () =>
-                      _addMaterial(_materialController.text.trim()),
+                  onPressed: () => _addMaterial(_materialController.text),
                 ),
               ],
             ),

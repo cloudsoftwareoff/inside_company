@@ -1,7 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/views/demands/confirmed_opportunity.dart';
@@ -23,43 +23,39 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
   int _currentPageIndex = 0;
   final DatabaseReference _databaseReference =
       FirebaseDatabase.instance.ref().child('notification/dir_info/');
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  List<String> dataList = [];
-  void _initializeNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    final InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
 
   void _subscribeToRealtimeUpdates() {
     _databaseReference.onValue.listen((event) {
-      setState(() {
-        final data = event.snapshot.value as Map<String, dynamic>;
+      final data = event.snapshot.value;
+      if (data is Map<Object?, Object?>) {
+        
         _showNotification(data);
-      });
+      } else {
+      
+        print('Unexpected data format: $data');
+      }
     });
   }
 
-  Future<void> _showNotification(Map<String, dynamic> data) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'your_channel_id', // Change this to your channel ID
-      'your_channel_name', // Change this to your channel name
-      //'your_channel_description', // Change this to your channel description
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      data['title'] ?? 'Notification Title',
-      'ID: ${data['id'] ?? 'N/A'}, R: ${data['r'] ?? 'N/A'}', // Customize notification body as needed
-      platformChannelSpecifics,
-      payload: 'item x', // You can optionally add a payload here
+  Future<void> _showNotification(Map<Object?, Object?> data) async {
+    data.forEach(
+      (key, value) {
+        final innerMap = value as Map<Object?, Object?>;
+        final title = innerMap['title'];
+        if (title != null) {
+          print(title);
+          AwesomeNotifications().createNotification(
+            content: NotificationContent(
+              icon: "assets/img/logo.png",
+              id: key.hashCode,
+              channelKey: "cloudsoftware",
+              title: "Opportunity got confirmed",
+              body: "$title was accepted",
+              
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -67,7 +63,7 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _initializeNotifications();
+
     _subscribeToRealtimeUpdates();
   }
 
@@ -104,12 +100,12 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
             _currentPageIndex = index;
           });
         },
-        children: [
+        children: const [
           AddOpportunityPage(),
-          const ViewAllOpportunitiesPage(
+          ViewAllOpportunitiesPage(
             state: "ALL",
           ),
-          const ConfirmedOpportunity()
+          ConfirmedOpportunity()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

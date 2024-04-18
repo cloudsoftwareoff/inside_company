@@ -1,16 +1,10 @@
-import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:inside_company/constant.dart';
 import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/services/firestore/opportunitydb.dart';
 import 'package:inside_company/views/demands/opportunity_details.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

@@ -12,9 +12,9 @@ Please respect our intellectual property rights and adhere to the terms of non-c
 Thank you for your understanding.
 */
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/providers/role_provider.dart';
@@ -37,6 +37,15 @@ void main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVubWtodm9ramRhcGx5b3BmZnh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI4NjE0MTIsImV4cCI6MjAyODQzNzQxMn0.XICdps172vKqGJ1VT-sqJHKSLrQF3BviKNC7GmmqmHk',
   );
+  AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(
+            channelKey: "cloudsoftware",
+            channelName: "Inside Company",
+            channelDescription: "for notification")
+      ],
+      debug: true);
   runApp(const MyApp());
 }
 

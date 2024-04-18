@@ -41,9 +41,9 @@ dependencies:
   firebase_storage: ^11.6.0
   flutter:
     sdk: flutter
-  flutter_downloader: ^1.11.7
+  
   flutter_file_downloader: ^1.2.1
-  flutter_local_notifications: ^17.0.1
+  awesome_notifications: ^0.9.3+1
   flutter_spinkit: ^5.2.1
   font_awesome_flutter: ^10.7.0
   hexcolor: ^3.0.1

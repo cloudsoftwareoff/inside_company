@@ -8,6 +8,7 @@ class Opportunity {
   List<String> material;
   String status;
   double budget;
+  String region;
   final Timestamp? timestamp;
   final Timestamp? lastModified;
   String? letter_link;
@@ -23,6 +24,7 @@ class Opportunity {
     this.timestamp,
     this.lastModified,
     this.letter_link,
+    required this.region
   });
 
   Map<String, dynamic> toMap() {
@@ -36,6 +38,7 @@ class Opportunity {
       'timestamp': timestamp,
       'lastModified': lastModified,
       'letter_link': letter_link,
+      'region':region
     };
   }
 
@@ -51,6 +54,7 @@ class Opportunity {
       timestamp: map['timestamp'],
       lastModified: map['lastModified'],
       letter_link: map['letter_link'],
+      region: map['region']
     );
   }
 }

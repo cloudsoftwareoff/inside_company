@@ -17,7 +17,8 @@ class OpportunityDB {
         'material': opportunity.material,
         'timestamp': opportunity.timestamp,
         'lastModified': opportunity.lastModified,
-        'budget': opportunity.budget
+        'budget': opportunity.budget,
+        'region':opportunity.region
       });
     } catch (e) {
       print('Error adding opportunity: $e');
@@ -43,7 +44,8 @@ class OpportunityDB {
           status: doc['status'],
           timestamp: doc['timestamp'],
           lastModified: doc['lastModified'],
-          material: materials, // Assign materials list to the opportunity
+          material: materials,
+          region: doc['region'],
           budget: doc['budget'] != null ? doc['budget'] : '-1',
           letter_link: doc['letter_link'],
         ));
@@ -75,6 +77,7 @@ class OpportunityDB {
             letter_link: doc['letter_link'],
             timestamp: doc['timestamp'],
             lastModified: doc['lastModified'],
+            region: doc['region'],
             material: materials,
             budget: doc['budget'] ?? -1,
           ));
