@@ -28,10 +28,8 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
     _databaseReference.onValue.listen((event) {
       final data = event.snapshot.value;
       if (data is Map<Object?, Object?>) {
-        
         _showNotification(data);
       } else {
-      
         print('Unexpected data format: $data');
       }
     });
@@ -46,12 +44,11 @@ class _OpportunityManagementPageState extends State<OpportunityManagementPage> {
           print(title);
           AwesomeNotifications().createNotification(
             content: NotificationContent(
-              icon: "assets/img/logo.png",
+              //icon: "assets/img/logo.jpg",
               id: key.hashCode,
               channelKey: "cloudsoftware",
               title: "Opportunity got confirmed",
               body: "$title was accepted",
-              
             ),
           );
         }

@@ -40,7 +40,8 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
       );
       return;
     }
-    final currentUserProvider = Provider.of<CurrentUserProvider>(context);
+    final currentUserProvider =
+        Provider.of<CurrentUserProvider>(context, listen: false);
     Opportunity opportunity = Opportunity(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       addedBy: FirebaseAuth.instance.currentUser!.uid,
