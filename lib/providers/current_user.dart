@@ -5,8 +5,6 @@ import 'package:inside_company/model/user_model.dart';
 class CurrentUserProvider extends ChangeNotifier {
   UserModel? currentuser;
   RoleModel? user_role;
-  //CurrentUserProvider({required this.currentuser, required this.user_role});
-
   void updateUser(UserModel user) {
     currentuser = user;
     notifyListeners();

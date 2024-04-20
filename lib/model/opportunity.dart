@@ -9,8 +9,8 @@ class Opportunity {
   String status;
   double budget;
   String region;
-  final Timestamp? timestamp;
-  final Timestamp? lastModified;
+   Timestamp? timestamp;
+   Timestamp? lastModified;
   String? letter_link;
 
   Opportunity({

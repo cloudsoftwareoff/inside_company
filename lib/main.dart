@@ -10,6 +10,7 @@ Any commercial use, reproduction, or distribution of this code is strictly prohi
 Please respect our intellectual property rights and adhere to the terms of non-commercial usage.
 
 Thank you for your understanding.
+
 */
 
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -17,6 +18,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/providers/current_user.dart';
+import 'package:inside_company/providers/project_provider.dart';
 import 'package:inside_company/providers/role_provider.dart';
 import 'package:inside_company/providers/users_list.dart';
 import 'package:inside_company/user_wrapper.dart';
@@ -43,7 +45,8 @@ void main() async {
         NotificationChannel(
             channelKey: "cloudsoftware",
             channelName: "Inside Company",
-            channelDescription: "for notification")
+            channelDescription: "for notification"
+            )
       ],
       debug: true);
   runApp(const MyApp());
@@ -57,6 +60,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserListProvider()),
+        ChangeNotifierProvider(create: (_) => ProjectProvider()),
         ChangeNotifierProvider(create: (_) => RoleListProvider()),
         ChangeNotifierProvider(create: (_) => CurrentUserProvider()),
       ],

@@ -5,7 +5,7 @@ class AppColors {
   //  default colors
   static Color primaryColor = HexColor("#162657");
   static Color secondaryColor = HexColor("#F3CD74");
-  static const Color editTextColor = Colors.white;
+  static const Color editTextColor = Color.fromARGB(255, 214, 128, 128);
   static const Color hintTextColor = Colors.white38;
 }
 

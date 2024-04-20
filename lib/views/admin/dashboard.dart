@@ -9,6 +9,8 @@ import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
 import 'package:inside_company/views/admin/dashboard_screen.dart';
+import 'package:inside_company/views/archive/edit_project.dart';
+import 'package:inside_company/views/archive/view_project.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
@@ -96,7 +98,8 @@ class _DashBoardState extends State<DashBoard> with WidgetsBindingObserver {
                 children: [
                   const RolePage(verified: true),
                   const RolePage(verified: false),
-                  DashboardScreen()
+                  ProjectsView()
+                  //DashboardScreen()
                 ],
               ),
             ),
@@ -133,17 +136,6 @@ class _DashBoardState extends State<DashBoard> with WidgetsBindingObserver {
       ),
     );
   }
-
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   super.didChangeAppLifecycleState(state);
-  //   if (state == AppLifecycleState.resumed) {
-  //     // Refresh data when app resumes
-  //     setState(() {
-  //       _userFuture = UserDB().getAllUsers();
-  //     });
-  //   }
-  // }
 }
 
 class RolePage extends StatelessWidget {
