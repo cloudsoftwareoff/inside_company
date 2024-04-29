@@ -11,6 +11,8 @@ Please respect our intellectual property rights and adhere to the terms of non-c
 
 Thank you for your understanding.
 
+DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
+DO NOT CHANGE DATA IN FIREBASE CONSOLE UNLESS YOU KNOW WHAT YOU ARE DOING
 */
 
 import 'package:awesome_notifications/awesome_notifications.dart';

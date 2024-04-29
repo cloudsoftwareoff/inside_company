@@ -8,56 +8,80 @@ class Page1 extends StatefulWidget {
 }
 
 class _Page1State extends State<Page1> {
-  DateTime _dateMiseEnVigueur = DateTime.now();
-  DateTime _datePublicationAO = DateTime.now();
+  DateTime _echeance = DateTime.now();
+
   final TextEditingController _budget = TextEditingController();
+  final TextEditingController _name = TextEditingController();
   @override
   void dispose() {
     super.dispose();
     _budget.dispose();
+    _name.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final projectProvider = Provider.of<ProjectProvider>(context);
+    if (projectProvider.project!.budgetAlloue != null) {
+      var budgetValue = projectProvider.project!.budgetAlloue!;
+
+      if (budgetValue % 1 == 0) {
+        _budget.text = budgetValue.toInt().toString();
+      } else {
+        _budget.text = budgetValue.toString();
+      }
+    }
+
+    if (projectProvider.project!.echeance != null) {
+      _echeance = projectProvider.project!.echeance!;
+    }
+
+    _name.text = projectProvider.project!.name;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
+            controller: _name,
+            decoration: const InputDecoration(
+              labelText: 'Project Name',
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              projectProvider.project!.name = value;
+            },
+          ),
+          const SizedBox(height: 20),
+          TextField(
             controller: _budget,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Budget Alloué',
               border: OutlineInputBorder(),
             ),
             onChanged: (value) {
-              projectProvider.project!.budgetAlloue = double.parse(value);
+              try {
+                if (value.length > 0) {
+                  projectProvider.project!.budgetAlloue = double.parse(value);
+                } else {
+                  projectProvider.project!.budgetAlloue = 0;
+                }
+              } catch (e) {}
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           buildDateTextField(
-            labelText: 'Date de Mise en Vigueur',
-            selectedDate: _dateMiseEnVigueur,
-            onTap: () => _selectDate(context, _dateMiseEnVigueur, (pickedDate) {
+            labelText: 'Date de echeance',
+            selectedDate: _echeance,
+            onTap: () => _selectDate(context, _echeance, (pickedDate) {
               setState(() {
-                _dateMiseEnVigueur = pickedDate;
-                projectProvider.project!.dateMiseEnVigueur = pickedDate;
+                _echeance = pickedDate;
+                projectProvider.project!.echeance = pickedDate;
               });
             }),
           ),
-          SizedBox(height: 20),
-          buildDateTextField(
-            labelText: 'Date de Publication AO',
-            selectedDate: _datePublicationAO,
-            onTap: () => _selectDate(context, _datePublicationAO, (pickedDate) {
-              setState(() {
-                _datePublicationAO = pickedDate;
-                projectProvider.project!.datePublicationAO = pickedDate;
-              });
-            }),
-          ),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -71,7 +95,7 @@ class _Page1State extends State<Page1> {
     return TextField(
       decoration: InputDecoration(
         labelText: labelText,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
       readOnly: true,
       controller: TextEditingController(
@@ -87,7 +111,7 @@ class _Page1State extends State<Page1> {
       Function(DateTime) onDateSelected) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: initialDate ?? DateTime.now(),
+      initialDate: initialDate,
       firstDate: DateTime(1900),
       lastDate: DateTime(2101),
     );

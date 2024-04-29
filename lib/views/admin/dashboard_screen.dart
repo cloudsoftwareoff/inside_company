@@ -6,7 +6,7 @@ import 'package:inside_company/model/region.dart';
 import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/users_list.dart';
 import 'package:inside_company/services/firestore/demand_db.dart';
-import 'package:inside_company/services/firestore/opportunitydb.dart';
+import 'package:inside_company/services/firestore/opportunity_db.dart';
 import 'package:inside_company/services/firestore/regiondb.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

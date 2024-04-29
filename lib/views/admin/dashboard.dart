@@ -1,18 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/model/role_model.dart';
 import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/current_user.dart';
-import 'package:inside_company/providers/role_provider.dart';
 import 'package:inside_company/services/users/auth.dart';
 import 'package:inside_company/services/users/role.dart';
 import 'package:inside_company/services/users/userdb.dart';
 import 'package:inside_company/views/admin/dashboard_screen.dart';
-import 'package:inside_company/views/archive/edit_project.dart';
-import 'package:inside_company/views/archive/view_project.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
+
 
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
@@ -98,8 +95,8 @@ class _DashBoardState extends State<DashBoard> with WidgetsBindingObserver {
                 children: [
                   const RolePage(verified: true),
                   const RolePage(verified: false),
-                  ProjectsView()
-                  //DashboardScreen()
+                  //ProjectsView()
+                  DashboardScreen()
                 ],
               ),
             ),

@@ -1,3 +1,4 @@
+// DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class RoleModel {
   final String id;
   final String name;

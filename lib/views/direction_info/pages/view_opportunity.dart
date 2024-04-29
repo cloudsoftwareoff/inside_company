@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:inside_company/components/op_details.dart';
+import 'package:inside_company/components/opportunity_card.dart';
 import 'package:inside_company/model/opportunity.dart';
-import 'package:inside_company/services/firestore/opportunitydb.dart';
-import 'package:inside_company/views/invest/view_opportunities.dart';
+import 'package:inside_company/services/firestore/opportunity_db.dart';
+
 
 class ViewAllOpportunitiesPage extends StatelessWidget {
   final String state;
@@ -30,8 +32,18 @@ class ViewAllOpportunitiesPage extends StatelessWidget {
                 itemCount: opportunities.length,
                 itemBuilder: (context, index) {
                   Opportunity opportunity = opportunities[index];
-                  return OpportunityCardD(opportunity: opportunity);
-
+                  return OpportunityColoredCard(
+                    opportunity: opportunity,
+                    onClick: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              OpportunityDetailWidget(opportunity: opportunity),
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
             );

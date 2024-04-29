@@ -14,7 +14,8 @@ class UserDB {
         'roleId': user.roleId,
         'picture': user.picture,
         'verified': user.verified,
-        'region': user.region
+        'region': user.region,
+        'isActive': true
       });
       print('User added to database successfully');
     } catch (e) {
@@ -54,6 +55,7 @@ class UserDB {
                 'https://i.pinimg.com/564x/a8/0e/36/a80e3690318c08114011145fdcfa3ddb.jpg',
             roleId: data['roleId'] ?? '',
             verified: data['verified'] ?? 'no',
+            isActive: data['isActive'] ?? true,
             region: data['region'] ?? 'null');
       } else {
         print('User with ID $uid not found.');
@@ -83,6 +85,7 @@ class UserDB {
             roleId: data['roleId'] ?? '',
             verified: data['verified'] ?? 'no',
             region: data['region'] ?? 'null');
+
         userList.add(user);
       }
     } catch (error) {

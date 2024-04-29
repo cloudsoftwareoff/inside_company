@@ -1,7 +1,11 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:inside_company/notification/listener.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
-import 'package:inside_company/views/demands/confirmed_opportunity.dart';
+import 'package:inside_company/views/chat/widgets/chat.dart';
+import 'package:inside_company/views/demands/listof_confirmed_opportunity.dart';
 import 'package:inside_company/views/demands/view_demands.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +20,13 @@ class DemandManagementPage extends StatefulWidget {
 class _DemandManagementPageState extends State<DemandManagementPage> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
+ 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listenToRealtimeUpdates('division');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +69,12 @@ class _DemandManagementPageState extends State<DemandManagementPage> {
             _currentPageIndex = index;
           });
         },
-        children: [
-          const ConfirmedOpportunity(),
-          ViewDemands(),
+        children: const [
+          ConfirmedOpportunityList(),
+          ViewDemands(
+            showConfirm: false,
+          ),
+          ChatScreen()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -83,6 +97,10 @@ class _DemandManagementPageState extends State<DemandManagementPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'View All Demands',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Chat',
           ),
         ],
       ),

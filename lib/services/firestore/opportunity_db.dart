@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inside_company/model/opportunity.dart';
-
+// DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class OpportunityDB {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String _collectionName = 'opportunities';

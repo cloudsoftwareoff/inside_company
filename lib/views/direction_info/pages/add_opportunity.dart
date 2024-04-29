@@ -3,8 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/model/opportunity.dart';
+import 'package:inside_company/notification/sender.dart';
 import 'package:inside_company/providers/current_user.dart';
-import 'package:inside_company/services/firestore/opportunitydb.dart';
+import 'package:inside_company/services/firestore/opportunity_db.dart';
 import 'package:provider/provider.dart';
 
 class AddOpportunityPage extends StatefulWidget {
@@ -42,8 +43,9 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
     }
     final currentUserProvider =
         Provider.of<CurrentUserProvider>(context, listen: false);
+    String _id = DateTime.now().millisecondsSinceEpoch.toString();
     Opportunity opportunity = Opportunity(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: _id,
       addedBy: FirebaseAuth.instance.currentUser!.uid,
       title: _titleController.text,
       description: _descriptionController.text,
@@ -56,6 +58,8 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
     );
 
     OpportunityDB().addOpportunity(opportunity).then((_) {
+      //Send Notification
+      sendNotification("invest", _titleController.text, "Opportunity", "Pending");
       _titleController.clear();
       _descriptionController.clear();
       _budgetController.clear();

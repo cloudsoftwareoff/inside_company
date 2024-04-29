@@ -1,22 +1,17 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/model/user_model.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/userdb.dart';
-import 'package:inside_company/utils/valid_email.dart';
 import 'package:inside_company/views/profile/widgets/appbar.dart';
 import 'package:inside_company/views/profile/widgets/button.dart';
 import 'package:inside_company/views/profile/widgets/pfp.dart';
-import 'package:inside_company/views/profile/widgets/textfield.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
 class EditProfilePage extends StatefulWidget {
   final UserModel user;
-  EditProfilePage({super.key, required this.user});
+  const EditProfilePage({super.key, required this.user});
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
@@ -27,16 +22,8 @@ bool loading = false;
 String myName = "";
 
 class _EditProfilePageState extends State<EditProfilePage> {
-final  TextEditingController _nameController = TextEditingController();
-final  TextEditingController _emailController = TextEditingController();
-// Future uploadImage(File file) async {
-//   final storage = FirebaseStorage.instance;
-//   final ref = storage.ref().child('profile_images/${DateTime.now().millisecondsSinceEpoch}');
-//   await ref.putFile(file);
-
-//   final url = await ref.getDownloadURL();
-//   print('Uploaded image URL: $url');
-// }
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +50,7 @@ final  TextEditingController _emailController = TextEditingController();
                       controller: _nameController,
                       decoration: const InputDecoration(
                         labelText: 'Full Name:',
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                       ),
                     ),
                     const SizedBox(height: 24),

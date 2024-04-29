@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+// DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class Opportunity {
   final String id;
   final String addedBy;
@@ -9,23 +9,25 @@ class Opportunity {
   String status;
   double budget;
   String region;
-   Timestamp? timestamp;
-   Timestamp? lastModified;
+  Timestamp? timestamp;
+  Timestamp? lastModified;
+  bool? visibilty;
   String? letter_link;
 
-  Opportunity({
-    required this.id,
-    required this.addedBy,
-    required this.title,
-    required this.description,
-    required this.status,
-    required this.budget,
-    required this.material, // Updated parameter name: materials
-    this.timestamp,
-    this.lastModified,
-    this.letter_link,
-    required this.region
-  });
+  Opportunity(
+      {
+      required this.id,
+      required this.addedBy,
+      required this.title,
+      required this.description,
+      required this.status,
+      required this.budget,
+      required this.material, // Updated parameter name: materials
+      this.timestamp,
+      this.lastModified,
+      this.letter_link,
+      this.visibilty,
+      required this.region});
 
   Map<String, dynamic> toMap() {
     return {
@@ -38,23 +40,22 @@ class Opportunity {
       'timestamp': timestamp,
       'lastModified': lastModified,
       'letter_link': letter_link,
-      'region':region
+      'region': region
     };
   }
 
   static Opportunity fromMap(Map<String, dynamic> map, String id) {
     return Opportunity(
-      id: id,
-      addedBy: map['addedBy'],
-      title: map['title'],
-      description: map['description'],
-      material: List<String>.from(map['material'] ?? []),
-      status: map['status'],
-      budget: map['budget'],
-      timestamp: map['timestamp'],
-      lastModified: map['lastModified'],
-      letter_link: map['letter_link'],
-      region: map['region']
-    );
+        id: id,
+        addedBy: map['addedBy'],
+        title: map['title'],
+        description: map['description'],
+        material: List<String>.from(map['material'] ?? []),
+        status: map['status'],
+        budget: map['budget'],
+        timestamp: map['timestamp'],
+        lastModified: map['lastModified'],
+        letter_link: map['letter_link'],
+        region: map['region']);
   }
 }

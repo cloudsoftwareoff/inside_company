@@ -311,6 +311,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                               uid: authResult.user!.uid,
                                               username: nameController.text,
                                               email: emailController.text,
+                                              
                                               picture:
                                                   "https://i.pinimg.com/564x/a8/0e/36/a80e3690318c08114011145fdcfa3ddb.jpg",
                                               roleId: selectedRole!.id,

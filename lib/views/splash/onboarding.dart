@@ -5,7 +5,9 @@ import 'package:inside_company/views/splash/widgets/config.dart';
 import 'package:inside_company/views/splash/widgets/content.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  final VoidCallback onOnboardingComplete;
+  const OnboardingScreen({Key? key, required this.onOnboardingComplete})
+      : super(key: key);
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -119,6 +121,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           padding: const EdgeInsets.all(30),
                           child: ElevatedButton(
                             onPressed: () {
+                              widget.onOnboardingComplete();
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -161,7 +164,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     fontWeight: FontWeight.w600,
                                     fontSize: (width <= 550) ? 13 : 17,
                                   ),
-                                ),
+                          ),
                                 child: const Text(
                                   "SKIP",
                                   style: TextStyle(color: Colors.black),

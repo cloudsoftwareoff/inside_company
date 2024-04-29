@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-Future<DateTime> selectDate(BuildContext context) async {
+Future<DateTime?> pickDate(BuildContext context) async {
   final DateTime? picked = await showDatePicker(
     context: context,
     initialDate: DateTime.now(),
-    firstDate: DateTime(1900),
+    firstDate: DateTime(2000),
     lastDate: DateTime(2101),
   );
-  return picked!;
+  return picked;
 }

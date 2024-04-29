@@ -1,36 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class Project {
   String id;
   String name;
+  String lastModified;
+  DateTime? echeance;
+  DateTime? datePreparationCahierCharges;
+  DateTime? dateValidationCahierCharges;
+  DateTime? datePublicationAppelOffre;
+  DateTime? dateClotureAppelOffre;
   double? budgetAlloue;
-  DateTime? dateMiseEnVigueur;
-  DateTime? datePublicationAO;
-  int? delaiAO;
-  DateTime? dateClotureAO;
-  DateTime? dateOuvertureOffres;
-  DateTime? datePrevueLivraison;
-  DateTime? dateReelleLivraison;
+  String? fournisseur;
+  DateTime? dateAffectation;
+  double? coutTotalMateriel;
+  double? coutParArticle;
+  DateTime? dateLivraisonPrevue;
+  DateTime? dateLivraisonReelle;
   DateTime? dateReceptionDefinitive;
+  double? penalite;
   double? coefficientPenalite;
   double? plafondPenalite;
-  double? montantPenalite;
 
   Project({
     required this.id,
     required this.name,
+    required this.lastModified,
+    this.echeance,
+    this.datePreparationCahierCharges,
+    this.dateValidationCahierCharges,
+    this.datePublicationAppelOffre,
+    this.dateClotureAppelOffre,
     this.budgetAlloue,
-    this.dateMiseEnVigueur,
-    this.datePublicationAO,
-    this.delaiAO,
-    this.dateClotureAO,
-    this.dateOuvertureOffres,
-    this.datePrevueLivraison,
-    this.dateReelleLivraison,
+    this.fournisseur,
+    this.dateAffectation,
+    this.coutTotalMateriel,
+    this.coutParArticle,
+    this.dateLivraisonPrevue,
+    this.dateLivraisonReelle,
     this.dateReceptionDefinitive,
+    this.penalite,
     this.coefficientPenalite,
     this.plafondPenalite,
-    this.montantPenalite,
   });
 
   factory Project.fromFirestore(DocumentSnapshot doc) {
@@ -38,36 +49,80 @@ class Project {
     return Project(
       id: doc.id,
       name: data['name'] ?? '',
-      budgetAlloue: data['budgetAlloue'] != null ? data['budgetAlloue'].toDouble() : null,
-      dateMiseEnVigueur: data['dateMiseEnVigueur'] != null ? (data['dateMiseEnVigueur'] as Timestamp).toDate() : null,
-      datePublicationAO: data['datePublicationAO'] != null ? (data['datePublicationAO'] as Timestamp).toDate() : null,
-      delaiAO: data['delaiAO'] ?? null,
-      dateClotureAO: data['dateClotureAO'] != null ? (data['dateClotureAO'] as Timestamp).toDate() : null,
-      dateOuvertureOffres: data['dateOuvertureOffres'] != null ? (data['dateOuvertureOffres'] as Timestamp).toDate() : null,
-      datePrevueLivraison: data['datePrevueLivraison'] != null ? (data['datePrevueLivraison'] as Timestamp).toDate() : null,
-      dateReelleLivraison: data['dateReelleLivraison'] != null ? (data['dateReelleLivraison'] as Timestamp).toDate() : null,
-      dateReceptionDefinitive: data['dateReceptionDefinitive'] != null ? (data['dateReceptionDefinitive'] as Timestamp).toDate() : null,
-      coefficientPenalite: data['coefficientPenalite'] != null ? data['coefficientPenalite'].toDouble() : null,
-      plafondPenalite: data['plafondPenalite'] != null ? data['plafondPenalite'].toDouble() : null,
-      montantPenalite: data['montantPenalite'] != null ? data['montantPenalite'].toDouble() : null,
+      lastModified: data['lastModified'] ?? "1713460006113",
+      echeance: data['echeance'] != null
+          ? (data['echeance'] as Timestamp).toDate()
+          : null,
+      datePreparationCahierCharges: data['datePreparationCahierCharges'] != null
+          ? (data['datePreparationCahierCharges'] as Timestamp).toDate()
+          : null,
+      dateValidationCahierCharges: data['dateValidationCahierCharges'] != null
+          ? (data['dateValidationCahierCharges'] as Timestamp).toDate()
+          : null,
+      datePublicationAppelOffre: data['datePublicationAppelOffre'] != null
+          ? (data['datePublicationAppelOffre'] as Timestamp).toDate()
+          : null,
+      dateClotureAppelOffre: data['dateClotureAppelOffre'] != null
+          ? (data['dateClotureAppelOffre'] as Timestamp).toDate()
+          : null,
+      budgetAlloue: data['budgetAlloue']?.toDouble(),
+      fournisseur: data['fournisseur'],
+      dateAffectation: data['dateAffectation'] != null
+          ? (data['dateAffectation'] as Timestamp).toDate()
+          : null,
+      coutTotalMateriel: data['coutTotalMateriel']?.toDouble(),
+      coutParArticle: data['coutParArticle']?.toDouble(),
+      dateLivraisonPrevue: data['dateLivraisonPrevue'] != null
+          ? (data['dateLivraisonPrevue'] as Timestamp).toDate()
+          : null,
+      dateLivraisonReelle: data['dateLivraisonReelle'] != null
+          ? (data['dateLivraisonReelle'] as Timestamp).toDate()
+          : null,
+      dateReceptionDefinitive: data['dateReceptionDefinitive'] != null
+          ? (data['dateReceptionDefinitive'] as Timestamp).toDate()
+          : null,
+      penalite: data['penalite']?.toDouble(),
+      coefficientPenalite: data['coefficientPenalite']?.toDouble(),
+      plafondPenalite: data['plafondPenalite']?.toDouble(),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id':id,
       'name': name,
+      'lastModified':lastModified,
+      'echeance': echeance != null ? Timestamp.fromDate(echeance!) : null,
+      'datePreparationCahierCharges': datePreparationCahierCharges != null
+          ? Timestamp.fromDate(datePreparationCahierCharges!)
+          : null,
+      'dateValidationCahierCharges': dateValidationCahierCharges != null
+          ? Timestamp.fromDate(dateValidationCahierCharges!)
+          : null,
+      'datePublicationAppelOffre': datePublicationAppelOffre != null
+          ? Timestamp.fromDate(datePublicationAppelOffre!)
+          : null,
+      'dateClotureAppelOffre': dateClotureAppelOffre != null
+          ? Timestamp.fromDate(dateClotureAppelOffre!)
+          : null,
       'budgetAlloue': budgetAlloue,
-      'dateMiseEnVigueur': dateMiseEnVigueur != null ? Timestamp.fromDate(dateMiseEnVigueur!) : null,
-      'datePublicationAO': datePublicationAO != null ? Timestamp.fromDate(datePublicationAO!) : null,
-      'delaiAO': delaiAO,
-      'dateClotureAO': dateClotureAO != null ? Timestamp.fromDate(dateClotureAO!) : null,
-      'dateOuvertureOffres': dateOuvertureOffres != null ? Timestamp.fromDate(dateOuvertureOffres!) : null,
-      'datePrevueLivraison': datePrevueLivraison != null ? Timestamp.fromDate(datePrevueLivraison!) : null,
-      'dateReelleLivraison': dateReelleLivraison != null ? Timestamp.fromDate(dateReelleLivraison!) : null,
-      'dateReceptionDefinitive': dateReceptionDefinitive != null ? Timestamp.fromDate(dateReceptionDefinitive!) : null,
+      'fournisseur': fournisseur,
+      'dateAffectation':
+          dateAffectation != null ? Timestamp.fromDate(dateAffectation!) : null,
+      'coutTotalMateriel': coutTotalMateriel,
+      'coutParArticle': coutParArticle,
+      'dateLivraisonPrevue': dateLivraisonPrevue != null
+          ? Timestamp.fromDate(dateLivraisonPrevue!)
+          : null,
+      'dateLivraisonReelle': dateLivraisonReelle != null
+          ? Timestamp.fromDate(dateLivraisonReelle!)
+          : null,
+      'dateReceptionDefinitive': dateReceptionDefinitive != null
+          ? Timestamp.fromDate(dateReceptionDefinitive!)
+          : null,
+      'penalite': penalite,
       'coefficientPenalite': coefficientPenalite,
       'plafondPenalite': plafondPenalite,
-      'montantPenalite': montantPenalite,
     };
   }
 }

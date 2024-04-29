@@ -1,3 +1,4 @@
+// DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class UserModel {
   final String uid;
   String username;
@@ -5,6 +6,7 @@ class UserModel {
   String picture;
   String email;
   String region;
+  bool? isActive;
   String? verified = "no";
 
   UserModel(
@@ -14,5 +16,6 @@ class UserModel {
       required this.picture,
       required this.roleId,
       required this.region,
+      this.isActive=true,
       this.verified});
 }

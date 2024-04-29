@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:inside_company/notification/sender.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:intl/intl.dart';
 import 'package:inside_company/model/demand.dart';
@@ -8,17 +10,16 @@ import 'package:inside_company/services/firestore/demand_db.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
-class OpportunityDetailsPage extends StatefulWidget {
+class MakeDemandPage extends StatefulWidget {
   final Opportunity opportunity;
 
-  OpportunityDetailsPage({Key? key, required this.opportunity})
-      : super(key: key);
+  MakeDemandPage({Key? key, required this.opportunity}) : super(key: key);
 
   @override
-  State<OpportunityDetailsPage> createState() => _OpportunityDetailsPageState();
+  State<MakeDemandPage> createState() => _MakeDemandPageState();
 }
 
-class _OpportunityDetailsPageState extends State<OpportunityDetailsPage> {
+class _MakeDemandPageState extends State<MakeDemandPage> {
   final TextEditingController _budgetController = TextEditingController();
   bool loading = false;
 
@@ -30,7 +31,7 @@ class _OpportunityDetailsPageState extends State<OpportunityDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
+    final currentUserProvider = Provider.of<CurrentUserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Opportunity Details'),
@@ -184,11 +185,13 @@ class _OpportunityDetailsPageState extends State<OpportunityDetailsPage> {
                         opportunityId: widget.opportunity.id,
                         budget: double.parse(_budgetController.text),
                         state: "PENDING",
-                        region:currentUserProvider.currentuser!.region ,
+                        region: currentUserProvider.currentuser!.region,
                         materials: widget.opportunity.material,
                         dateDA: Timestamp.now(),
                       ),
                     );
+                    sendNotification(
+                        'der', widget.opportunity.title, "Demand", "Created");
                     _budgetController.clear();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

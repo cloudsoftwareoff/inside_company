@@ -1,14 +1,16 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/model/demand.dart';
 import 'package:inside_company/model/opportunity.dart';
+import 'package:inside_company/notification/listener.dart';
 import 'package:inside_company/services/firestore/demand_db.dart';
-import 'package:inside_company/services/firestore/opportunitydb.dart';
+import 'package:inside_company/services/firestore/opportunity_db.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ViewDemands extends StatefulWidget {
-  const ViewDemands({Key? key}) : super(key: key);
+  final bool showConfirm;
+  const ViewDemands({Key? key, required this.showConfirm}) : super(key: key);
 
   @override
   _ViewDemandsState createState() => _ViewDemandsState();
@@ -26,6 +28,7 @@ class _ViewDemandsState extends State<ViewDemands> {
     _demands = [];
     _listKey = GlobalKey<AnimatedListState>();
     _loadDemands();
+    listenToRealtimeUpdates('division');
   }
 
   Future<void> _loadDemands() async {
@@ -47,7 +50,7 @@ class _ViewDemandsState extends State<ViewDemands> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: const Text("Cancel"),
             ),
@@ -61,7 +64,11 @@ class _ViewDemandsState extends State<ViewDemands> {
                   // Update demand state to "CONFIRMED"
                   demand.state = "CONFIRMED";
                   await DemandDB().updateDemand(demand);
-
+                  final databaseRef = FirebaseDatabase.instance
+                      .ref()
+                      .child('notification/division/${demand.id}/');
+                  await databaseRef
+                      .set({"title": "demand", "r": "0", "id": demand.id});
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Demand Confirmed")));
 
@@ -107,7 +114,7 @@ class _ViewDemandsState extends State<ViewDemands> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('No opportunities found.'));
+              return const Center(child: Text('No opportunities found.'));
             } else {
               List<Opportunity> opportunities = snapshot.data!;
 
@@ -151,13 +158,22 @@ class _ViewDemandsState extends State<ViewDemands> {
             Icons.shop_2_rounded,
             color: Colors.amber,
           ),
+          //Widget shared by division info & DER
           trailing: demand.state == "CONFIRMED"
-              ? Text("Demand Confirmed")
-              : ElevatedButton(
-                  onPressed: () {
-                    _onItemTap(demand, context);
-                  },
-                  child: const Text("Confirm")),
+              ? const Text(
+                  "Demand Confirmed",
+                  style: TextStyle(color: Colors.green),
+                )
+              : !widget.showConfirm
+                  ? const Text(
+                      "Demand in Pending",
+                      style: TextStyle(color: Colors.orange),
+                    )
+                  : ElevatedButton(
+                      onPressed: () {
+                        _onItemTap(demand, context);
+                      },
+                      child: const Text("Confirm")),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class Demand {
   String id;
   String opportunityId;

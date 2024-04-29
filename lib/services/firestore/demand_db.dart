@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inside_company/model/demand.dart';
-
+// DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class DemandDB {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 

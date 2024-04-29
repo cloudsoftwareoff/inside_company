@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:inside_company/components/banned_screen.dart';
 import 'package:inside_company/constant.dart';
 import 'package:inside_company/model/role_model.dart';
 import 'package:inside_company/model/user_model.dart';
@@ -117,6 +118,9 @@ class _UserWrapperState extends State<UserWrapper> {
             (role) => role.id == currentUser.roleId,
             //orElse: () => null,
           );
+          if (currentUser.isActive != null && currentUser.isActive == false) {
+            return const BannedAccountWidget();
+          }
           if (currentUser.verified == "yes") {
             switch (currentUserRole.id) {
               case "atf0bwtJzUgFXW3LI9GU":

@@ -1,29 +1,28 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:inside_company/notification/sender.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:inside_company/model/opportunity.dart';
-import 'package:inside_company/services/firestore/opportunitydb.dart';
+import 'package:inside_company/services/firestore/opportunity_db.dart';
 
-class ConfirmationScreen extends StatefulWidget {
+class ConfirmOpportunityScreen extends StatefulWidget {
   final Opportunity opportunity;
 
-  const ConfirmationScreen({Key? key, required this.opportunity})
+  const ConfirmOpportunityScreen({Key? key, required this.opportunity})
       : super(key: key);
 
   @override
-  _ConfirmationScreenState createState() => _ConfirmationScreenState();
+  _ConfirmOpportunityScreenState createState() =>
+      _ConfirmOpportunityScreenState();
 }
 
-class _ConfirmationScreenState extends State<ConfirmationScreen> {
+class _ConfirmOpportunityScreenState extends State<ConfirmOpportunityScreen> {
   File? _selectedFile;
   bool _uploading = false;
   bool _uploaded = false;
   final supabase = Supabase.instance.client;
-
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Future<void> _pickPDFFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -72,6 +71,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Confirmation'),
@@ -107,6 +107,10 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
             const SizedBox(height: 16),
             _uploaded
                 ? ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.green),
+                    ),
                     onPressed: () async {
                       if (_selectedFile == null) {
                         ScaffoldMessenger.of(context)
@@ -116,13 +120,18 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                         return;
                       }
                       try {
-                        final databaseRef = FirebaseDatabase.instance.ref().child(
-                            'notification/dir_info/${widget.opportunity.id}/');
-                        await databaseRef.set({
-                          "title": widget.opportunity.title,
-                          "r": "0",
-                          "id": widget.opportunity.id
-                        });
+                        sendNotification(
+                            'dir_info',
+                      
+                            widget.opportunity.title,
+                            "Opportunity",
+                            "Confirmed");
+                        sendNotification(
+                            'division',
+                      
+                            widget.opportunity.title,
+                            "Opportunity",
+                            "Confirmed");
                         await OpportunityDB().updateOpportunityStatus(
                             widget.opportunity.id,
                             'CONFIRMED',
@@ -143,15 +152,30 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                         ));
                       }
                     },
-                    child: const Text('Confirm'),
+                    child: const Text(
+                      'Confirm',
+                    ),
                   )
                 : const SizedBox(),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('Please wait...'),
+                ));
+                OpportunityDB().updateOpportunityStatus(
+                    widget.opportunity.id, "REFUSED", "null");
+                sendNotification('dir_info', widget.opportunity.title,
+                    "Opportunity", "Refused");
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('Opportunity refused'),
+                ));
               },
-              child: const Text('Cancel'),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.red),
+              ),
+              child: const Text('Refuse'),
             ),
           ],
         ),

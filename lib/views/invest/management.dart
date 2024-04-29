@@ -2,7 +2,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/providers/current_user.dart';
 import 'package:inside_company/services/users/auth.dart';
-import 'package:inside_company/views/invest/view_opportunities.dart';
+import 'package:inside_company/views/archive/view_project.dart';
+import 'package:inside_company/views/chat/widgets/chat.dart';
+import 'package:inside_company/views/invest/view_pending_opportunities.dart';
 import 'package:inside_company/views/direction_info/pages/view_opportunity.dart';
 import 'package:inside_company/views/profile/profile_page.dart';
 import 'package:provider/provider.dart';
@@ -57,9 +59,12 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
           ViewAllOpportunitiesPage(
             state: "ALL",
           ),
+          ProjectsView(),
+          ChatScreen()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.amber,
         currentIndex: _currentPageIndex,
         onTap: (index) {
           setState(() {
@@ -80,6 +85,14 @@ class _InvestmentManagePageState extends State<InvestmentManagePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'View',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.production_quantity_limits),
+            label: 'Project',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
           ),
         ],
       ),

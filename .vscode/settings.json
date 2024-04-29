@@ -1,8 +1,16 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "cSpell.words": [
+        "Alloue",
+        "delai",
+        "montant",
+        "Offres",
+        "Ouverture",
+        "Penalite",
         "Readex",
+        "Reelle",
         "STEB",
-        "Supabase"
+        "Supabase",
+        "Vigueur"
     ]
 }

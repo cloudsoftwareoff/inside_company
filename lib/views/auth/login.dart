@@ -107,8 +107,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   height: 30,
                                 ),
                                 TextField(
+                                //  inputFormatters: [],
                                   controller: _passController,
                                   textAlign: TextAlign.start,
+                                  //!
+                                  obscureText: true,
                                   style: const TextStyle(
                                     color: AppColors.editTextColor,
                                     fontSize: 13,
