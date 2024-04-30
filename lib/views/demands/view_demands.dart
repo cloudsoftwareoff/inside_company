@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:inside_company/model/demand.dart';
 import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/notification/listener.dart';
+import 'package:inside_company/notification/sender.dart';
 import 'package:inside_company/services/firestore/demand_db.dart';
 import 'package:inside_company/services/firestore/opportunity_db.dart';
 import 'package:intl/intl.dart';
@@ -64,11 +65,10 @@ class _ViewDemandsState extends State<ViewDemands> {
                   // Update demand state to "CONFIRMED"
                   demand.state = "CONFIRMED";
                   await DemandDB().updateDemand(demand);
-                  final databaseRef = FirebaseDatabase.instance
-                      .ref()
-                      .child('notification/division/${demand.id}/');
-                  await databaseRef
-                      .set({"title": "demand", "r": "0", "id": demand.id});
+
+                  sendNotification(
+                      'division', "view more", "Demand", 'Confirmed');
+
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Demand Confirmed")));
 
