@@ -9,7 +9,8 @@ import 'package:inside_company/services/firestore/opportunity_db.dart';
 import 'package:provider/provider.dart';
 
 class AddOpportunityPage extends StatefulWidget {
-  const AddOpportunityPage({super.key});
+  final Opportunity? opportunityEdit;
+  const AddOpportunityPage({super.key, this.opportunityEdit});
 
   @override
   _AddOpportunityPageState createState() => _AddOpportunityPageState();
@@ -20,7 +21,7 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _budgetController = TextEditingController();
   final TextEditingController _materialController = TextEditingController();
-  final List<String> _materials = [];
+  List<String> _materials = [];
 
   void _addOpportunity() {
     if (_titleController.text.isEmpty ||
@@ -45,7 +46,7 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
         Provider.of<CurrentUserProvider>(context, listen: false);
     String _id = DateTime.now().millisecondsSinceEpoch.toString();
     Opportunity opportunity = Opportunity(
-      id: _id,
+      id: widget.opportunityEdit != null ? widget.opportunityEdit!.id : _id,
       addedBy: FirebaseAuth.instance.currentUser!.uid,
       title: _titleController.text,
       description: _descriptionController.text,
@@ -59,7 +60,8 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
 
     OpportunityDB().addOpportunity(opportunity).then((_) {
       //Send Notification
-      sendNotification("invest", _titleController.text, "Opportunity", "Pending");
+      sendNotification(
+          "invest", _titleController.text, "Opportunity", "Pending");
       _titleController.clear();
       _descriptionController.clear();
       _budgetController.clear();
@@ -92,6 +94,14 @@ class _AddOpportunityPageState extends State<AddOpportunityPage> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.opportunityEdit != null) {
+      _titleController.text = widget.opportunityEdit!.title;
+      _descriptionController.text = widget.opportunityEdit!.description;
+      _budgetController.text = widget.opportunityEdit!.budget.toString();
+      _materials = widget.opportunityEdit!.material;
+      _titleController.text = widget.opportunityEdit!.title;
+    }
   }
 
   @override

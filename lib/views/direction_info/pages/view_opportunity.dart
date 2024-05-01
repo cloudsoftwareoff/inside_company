@@ -4,7 +4,7 @@ import 'package:inside_company/components/op_details.dart';
 import 'package:inside_company/components/opportunity_card.dart';
 import 'package:inside_company/model/opportunity.dart';
 import 'package:inside_company/services/firestore/opportunity_db.dart';
-
+import 'package:inside_company/views/direction_info/pages/add_opportunity.dart';
 
 class ViewAllOpportunitiesPage extends StatelessWidget {
   final String state;
@@ -32,17 +32,28 @@ class ViewAllOpportunitiesPage extends StatelessWidget {
                 itemCount: opportunities.length,
                 itemBuilder: (context, index) {
                   Opportunity opportunity = opportunities[index];
-                  return OpportunityColoredCard(
-                    opportunity: opportunity,
-                    onClick: () {
+                  return GestureDetector(
+                    onLongPress: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              OpportunityDetailWidget(opportunity: opportunity),
+                              AddOpportunityPage(opportunityEdit: opportunity),
                         ),
                       );
                     },
+                    child: OpportunityColoredCard(
+                      opportunity: opportunity,
+                      onClick: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OpportunityDetailWidget(
+                                opportunity: opportunity),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
               ),

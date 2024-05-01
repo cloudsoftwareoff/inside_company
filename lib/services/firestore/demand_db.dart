@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inside_company/model/demand.dart';
+
 // DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class DemandDB {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -14,11 +15,12 @@ class DemandDB {
 
   Future<List<Demand>> getDemands() async {
     try {
-      QuerySnapshot querySnapshot =
-          await _firestore.collection('demands').get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('demands')
+          .orderBy('id', descending: true)
+          .get();
       List<Demand> demands = querySnapshot.docs.map((doc) {
-        final data = doc.data()
-            as Map<String, dynamic>?; 
+        final data = doc.data() as Map<String, dynamic>?;
         if (data != null) {
           return Demand.fromMap(data, doc.id);
         } else {

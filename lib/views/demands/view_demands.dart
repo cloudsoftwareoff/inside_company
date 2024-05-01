@@ -1,4 +1,3 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:inside_company/model/demand.dart';
 import 'package:inside_company/model/opportunity.dart';
@@ -34,10 +33,17 @@ class _ViewDemandsState extends State<ViewDemands> {
 
   Future<void> _loadDemands() async {
     List<Demand> demands = await DemandDB().getDemands();
+    try {
+      setState(() {
+        _demands = demands;
+      });
+    } catch (e) {}
+  }
 
-    setState(() {
-      _demands = demands;
-    });
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   void _onItemTap(Demand demand, BuildContext context) async {

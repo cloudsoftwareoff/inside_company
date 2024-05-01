@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inside_company/model/opportunity.dart';
+
 // DO NOT PLAYING AROUND WITH ATTRIBUTE NAMES
 class OpportunityDB {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -18,7 +19,7 @@ class OpportunityDB {
         'timestamp': opportunity.timestamp,
         'lastModified': opportunity.lastModified,
         'budget': opportunity.budget,
-        'region':opportunity.region
+        'region': opportunity.region
       });
     } catch (e) {
       print('Error adding opportunity: $e');
@@ -28,8 +29,10 @@ class OpportunityDB {
 
   Future<List<Opportunity>> fetchOpportunities() async {
     try {
-      QuerySnapshot snapshot =
-          await _firestore.collection(_collectionName).get();
+      QuerySnapshot snapshot = await _firestore
+          .collection(_collectionName)
+          .orderBy('id', descending: true)
+          .get();
       List<Opportunity> opportunities = [];
 
       for (var doc in snapshot.docs) {
@@ -60,8 +63,10 @@ class OpportunityDB {
 
   Future<List<Opportunity>> fetchOpportunitiesByState(String state) async {
     try {
-      QuerySnapshot snapshot =
-          await _firestore.collection(_collectionName).get();
+      QuerySnapshot snapshot = await _firestore
+          .collection(_collectionName)
+          .orderBy('lastModified', descending: true)
+          .get();
       List<Opportunity> opportunities = [];
 
       for (var doc in snapshot.docs) {
