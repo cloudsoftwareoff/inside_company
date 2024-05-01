@@ -17,7 +17,7 @@ class DemandDB {
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('demands')
-          .orderBy('id', descending: true)
+          .orderBy('dateDA', descending: true)
           .get();
       List<Demand> demands = querySnapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>?;
