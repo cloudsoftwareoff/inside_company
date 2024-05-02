@@ -47,15 +47,17 @@ class _WrapperState extends State<Wrapper> {
           // Ensure the user is logged in
           if (user != null) {
             // Return home
-            return _showOnboarding ? OnboardingScreen(
-              onOnboardingComplete: _updateOnboardingStatus,
-            ) : const UserWrapper();
+            return _showOnboarding
+                ? OnboardingScreen(
+                    onOnboardingComplete: _updateOnboardingStatus,
+                  )
+                : const UserWrapper();
           } else {
             // Show auth
             return const MainAuth();
           }
         } else {
-          // Show loading indicator or another placeholder widget
+          // Show loading
           return CircularProgressIndicator();
         }
       },
