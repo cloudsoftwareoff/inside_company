@@ -25,6 +25,7 @@ bool load = false;
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    print(widget.userdata.verified);
     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
     final currentUserRole = currentUserProvider.user_role;
     return Builder(
@@ -59,8 +60,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 20,
               ),
               Visibility(
-                  visible: widget.userdata.verified != "yes" &&
-                      currentUserRole!.id == "sudo",
+                  visible: widget.userdata.verified == "no" &&
+                      currentUserRole!.id == "sudo" &&
+                      currentUserProvider.currentuser!.verified == "yes",
                   child: Center(
                       child: ButtonWidget(
                           text: "Verify User",

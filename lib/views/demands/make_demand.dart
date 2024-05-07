@@ -12,8 +12,8 @@ import 'package:provider/provider.dart';
 
 class MakeDemandPage extends StatefulWidget {
   final Opportunity opportunity;
-
-  MakeDemandPage({Key? key, required this.opportunity}) : super(key: key);
+  final Demand? demandEdit;
+  MakeDemandPage({Key? key, required this.opportunity, this.demandEdit}) : super(key: key);
 
   @override
   State<MakeDemandPage> createState() => _MakeDemandPageState();
@@ -22,6 +22,14 @@ class MakeDemandPage extends StatefulWidget {
 class _MakeDemandPageState extends State<MakeDemandPage> {
   final TextEditingController _budgetController = TextEditingController();
   bool loading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.demandEdit !=null){
+      _budgetController.text=widget.demandEdit!.budget.toString();
+    }
+  }
 
   @override
   void dispose() {
@@ -77,7 +85,7 @@ class _MakeDemandPageState extends State<MakeDemandPage> {
                     ),
                   ),
                   Text(
-                    '${widget.opportunity.budget.toStringAsFixed(2)} TND',
+                  '${widget.opportunity.budget.toStringAsFixed(2)} TND',
                     style: const TextStyle(fontSize: 16),
                   ),
                 ],
@@ -181,7 +189,7 @@ class _MakeDemandPageState extends State<MakeDemandPage> {
                   try {
                     await DemandDB().addDemand(
                       Demand(
-                        id: DateTime.now().millisecondsSinceEpoch.toString(),
+                        id:widget.demandEdit !=null ?widget.demandEdit!.id: DateTime.now().millisecondsSinceEpoch.toString(),
                         opportunityId: widget.opportunity.id,
                         budget: double.parse(_budgetController.text),
                         state: "PENDING",
@@ -195,7 +203,7 @@ class _MakeDemandPageState extends State<MakeDemandPage> {
                     _budgetController.clear();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Purchase demand added successfully"),
+                        content: Text("Purchase demand updated successfully"),
                       ),
                     );
                   } catch (e) {

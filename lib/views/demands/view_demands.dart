@@ -5,6 +5,7 @@ import 'package:inside_company/notification/listener.dart';
 import 'package:inside_company/notification/sender.dart';
 import 'package:inside_company/services/firestore/demand_db.dart';
 import 'package:inside_company/services/firestore/opportunity_db.dart';
+import 'package:inside_company/views/demands/make_demand.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
@@ -46,12 +47,12 @@ class _ViewDemandsState extends State<ViewDemands> {
     super.dispose();
   }
 
-  void _onItemTap(Demand demand, BuildContext context) async {
+  void _onItemTap(Demand demand, BuildContext context, String status) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Confirm Demand"),
+          title: const Text("update Demand"),
           content:
               const Text("Are you sure you want to proceed with this demand?"),
           actions: <Widget>[
@@ -69,22 +70,19 @@ class _ViewDemandsState extends State<ViewDemands> {
                   });
 
                   // Update demand state to "CONFIRMED"
-                  demand.state = "CONFIRMED";
+                  demand.state = status;
                   await DemandDB().updateDemand(demand);
 
-                  sendNotification(
-                      'division', "view more", "Demand", 'Confirmed');
+                  sendNotification('division', "view more", "Demand", status);
 
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Demand Confirmed")));
+                      const SnackBar(content: Text("Demand updated")));
 
                   Navigator.of(context).pop();
 
                   setState(() {
                     _isLoading = false;
                   });
-
-                  print('confirmed');
                 } catch (e) {
                   print("Error confirming demand: $e");
 
@@ -94,7 +92,7 @@ class _ViewDemandsState extends State<ViewDemands> {
                   });
                 }
               },
-              child: const Text("Confirm"),
+              child: const Text("Yes"),
             ),
           ],
         );
@@ -143,43 +141,67 @@ class _ViewDemandsState extends State<ViewDemands> {
 
   Widget _buildItem(
       Demand demand, Animation<double> animation, Opportunity opportunity) {
-    return SizeTransition(
-      sizeFactor: animation,
-      child: Card(
-        elevation: 8,
-        color: Colors.white,
-        child: ListTile(
-          tileColor: Colors.white,
-          title: Text(opportunity.title),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text("Budget: ${demand.budget.toString()} TND"),
-              Text(DateFormat('MMM dd, yyyy - HH:mm a')
-                  .format(opportunity.timestamp!.toDate()))
-            ],
+    return GestureDetector(
+      onLongPress: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                MakeDemandPage(opportunity: opportunity, demandEdit: demand),
           ),
-          leading: const Icon(
-            Icons.shop_2_rounded,
-            color: Colors.amber,
+        );
+      },
+      child: SizeTransition(
+        sizeFactor: animation,
+        child: Card(
+          elevation: 8,
+          color: Colors.white,
+          child: ListTile(
+            tileColor: Colors.white,
+            title: Text(opportunity.title),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Budget: ${demand.budget.toString()} TND"),
+                Text(DateFormat('MMM dd, yyyy - HH:mm a')
+                    .format(opportunity.timestamp!.toDate()))
+              ],
+            ),
+            leading: const Icon(
+              Icons.shop_2_rounded,
+              color: Colors.amber,
+            ),
+            //Widget shared by division info & DER
+            trailing: demand.state == "CONFIRMED"
+                ? const Text(
+                    "Demand Confirmed",
+                    style: TextStyle(color: Colors.green),
+                  )
+                : demand.state == "REFUSED"
+                    ? const Text(
+                        "Refusé",
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : !widget.showConfirm
+                        ? const Text(
+                            "Demand in Pending",
+                            style: TextStyle(color: Colors.orange),
+                          )
+                        : Column(
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    _onItemTap(demand, context, "CONFIRMED");
+                                  },
+                                  child: const Text("Confirm")),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    _onItemTap(demand, context, "REFUSED");
+                                  },
+                                  child: const Text("Refuse")),
+                            ],
+                          ),
           ),
-          //Widget shared by division info & DER
-          trailing: demand.state == "CONFIRMED"
-              ? const Text(
-                  "Demand Confirmed",
-                  style: TextStyle(color: Colors.green),
-                )
-              : !widget.showConfirm
-                  ? const Text(
-                      "Demand in Pending",
-                      style: TextStyle(color: Colors.orange),
-                    )
-                  : ElevatedButton(
-                      onPressed: () {
-                        _onItemTap(demand, context);
-                      },
-                      child: const Text("Confirm")),
         ),
       ),
     );

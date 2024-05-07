@@ -14,7 +14,7 @@ class RoleListView extends StatefulWidget {
 
 class _RoleListViewState extends State<RoleListView> {
   RoleModel? selectedRole;
-  List<RoleModel> roles = []; // Store the roles list locally
+  List<RoleModel> roles = []; 
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _RoleListViewState extends State<RoleListView> {
           );
         } else {
           roles =
-              snapshot.data!; // Assign the roles list from the snapshot data
+              snapshot.data!; 
           return Center(
             child: DropdownButton<String>(
               value: selectedRole?.id,
