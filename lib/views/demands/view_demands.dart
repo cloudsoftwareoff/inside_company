@@ -52,7 +52,7 @@ class _ViewDemandsState extends State<ViewDemands> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("update Demand"),
+          title:  Text("update Demand: $status"),
           content:
               const Text("Are you sure you want to proceed with this demand?"),
           actions: <Widget>[
@@ -69,7 +69,7 @@ class _ViewDemandsState extends State<ViewDemands> {
                     _isLoading = true;
                   });
 
-                  // Update demand state to "CONFIRMED"
+                  // Update demand state
                   demand.state = status;
                   await DemandDB().updateDemand(demand);
 
@@ -164,7 +164,10 @@ class _ViewDemandsState extends State<ViewDemands> {
               children: [
                 Text("Budget: ${demand.budget.toString()} TND"),
                 Text(DateFormat('MMM dd, yyyy - HH:mm a')
-                    .format(opportunity.timestamp!.toDate()))
+                    .format(opportunity.timestamp!.toDate())),
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
             leading: const Icon(
@@ -189,16 +192,35 @@ class _ViewDemandsState extends State<ViewDemands> {
                           )
                         : Column(
                             children: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    _onItemTap(demand, context, "CONFIRMED");
-                                  },
-                                  child: const Text("Confirm")),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    _onItemTap(demand, context, "REFUSED");
-                                  },
-                                  child: const Text("Refuse")),
+                              GestureDetector(
+                                onTap: () {
+                                  _onItemTap(demand, context, "CONFIRMED");
+                                },
+                                child: const Icon(
+                                  Icons.done_outline,
+                                  color: Colors.green,
+                                ),
+                              ),
+
+                              GestureDetector(
+                                onTap: () {
+                                  _onItemTap(demand, context, "REFUSED");
+                                },
+                                child: const Icon(
+                                  Icons.cancel_outlined,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              // ElevatedButton(
+                              //     onPressed: () {
+                              //       _onItemTap(demand, context, "CONFIRMED");
+                              //     },
+                              //     child: const Text("Confirm")),
+                              // ElevatedButton(
+                              //     onPressed: () {
+                              //       _onItemTap(demand, context, "REFUSED");
+                              //     },
+                              //     child: const Text("Refuse")),
                             ],
                           ),
           ),
